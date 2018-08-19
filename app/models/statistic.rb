@@ -36,22 +36,12 @@ class Statistic < ActiveRecord::Base
     end
   end
 
-  def self.update_standard_weeks!
-    new_json = standard.map do |pl|
+  def self.update_weeks(type)
+    self.send(type.to_sym).map do |pl|
       fake = Player.fake_show(pl)
-      pl["wks"] = fake.weeks_format('standard')
+      pl["wks"] = fake.weeks_format(type)
       pl
     end
-    find_by(name: 'standard').update!(json: JSON.generate(new_json))
-  end
-
-  def self.update_ppr_weeks!
-    new_json = ppr.map do |pl|
-      fake = Player.fake_show(pl)
-      pl["wks"] = fake.weeks_format('ppr')
-      pl
-    end
-    find_by(name: 'ppr').update!(json: JSON.generate(new_json))
   end
 
   def self.standard

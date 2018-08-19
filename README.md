@@ -1,24 +1,8 @@
-# README
+Welcome to Lineup Jackal!
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+In this app, you can:
+  - View and interact with flexible versions of your fantasy lineups
+  - Plan trades or  prepare for matchups by coparing teams
+  - Explore free agents to determine sleepers/best pickups
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Basically, this is your playroom before you set your lineups for the week. Enjoy!

@@ -6,12 +6,12 @@
   <section class="pl-5 pr-5">
     <% @starters.each do |player| %>
       <div class="pt-2 pb-2">
-        <%= render 'player', player: player, flex: false %>
+        <%= render 'player', player: player, type: @type, flex: false %>
       </div>
     <% end %>
     <% @flex.each do |player| %>
       <div class="pt-2 pb-2">
-        <%= render 'player', player: player, flex: 'Flex' %>
+        <%= render 'player', player: player, type: @type, flex: 'Flex' %>
       </div>
     <% end %>
   </section>
@@ -21,7 +21,7 @@
   <section class="pl-5 pr-5">
     <% @bench.each do |player| %>
       <div class="pt-2 pb-2">
-        <%= render 'player', player: player, flex: false %>
+        <%= render 'player', player: player, type: @type, flex: false %>
       </div>
     <% end %>
   </section>

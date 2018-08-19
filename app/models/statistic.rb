@@ -16,7 +16,8 @@ class Statistic < ActiveRecord::Base
       hsh = JSON.parse(fake.to_json)
       hsh["team"] = fake.team
       hsh["projected"] = fake.projected
-      hsh["weekly"] = fake.weekly
+      hsh["weekly_standard"] = fake.weekly('standard')
+      hsh["weekly_ppr"] = fake.weekly('ppr')
       hsh["image"] = fake.image
       hsh
     end

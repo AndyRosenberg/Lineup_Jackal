@@ -5,6 +5,7 @@ class PlayersController < ApplicationController
   def index
     everything ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
     @all_players ||= @lineup.filter_players(everything)
+    @type = @lineup.league_type
   end
 
   def create

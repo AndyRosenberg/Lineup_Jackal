@@ -6,6 +6,11 @@
     <% @lineups.each do |lineup| %>
       <dl class="d-inline-block p-4" style="vertical-align: top !important">
         <dt class="h4 blink"><%= link_to lineup.name, lineup_path(lineup) %></dt>
+        <dd>
+          <%= link_to "Add", lineup_players_path(lineup), class: "btn btn-default btn-idx" %>
+          <%= link_to "Edit", edit_lineup_path(lineup), class: "btn btn-default btn-idx" %>
+          <%= link_to "Comp", compare_lineup_path(lineup), class: "btn btn-default btn-idx" %>
+        </dd>
         <hr />
         <% lineup.players.each do |plyr| %>
           <dd><%= "#{plyr.full_name} (#{plyr.status})" %></dd>

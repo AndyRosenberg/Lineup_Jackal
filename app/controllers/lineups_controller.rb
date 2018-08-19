@@ -36,18 +36,18 @@ class LineupsController < ApplicationController
   def new; end
 
   def show
-    type = @lineup.league_type
+    @type = @lineup.league_type
 
     @starters = @lineup.select_players(Statistic.everything, 'starter')
-    starters_stats = @lineup.select_players(Statistic.send(type.to_sym), 'starter')
+    starters_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'starter')
     merge!(@starters, starters_stats)
 
     @bench = @lineup.select_players(Statistic.everything, 'bench')
-    bench_stats = @lineup.select_players(Statistic.send(type.to_sym), 'bench')
+    bench_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'bench')
     merge!(@bench, bench_stats)
 
     @flex = @lineup.select_players(Statistic.everything, 'flex')
-    flex_stats = @lineup.select_players(Statistic.send(type.to_sym), 'flex')
+    flex_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'flex')
     merge!(@flex, flex_stats)
   end
 

@@ -121,9 +121,10 @@ class Player < ActiveRecord::Base
     pj ? pj['fantasyPoints'] : "0"
   end
 
-  def weekly
+  def weekly(type = nil)
+    type = (type || league_type)
     pj = Statistic.weekly[position].find {|plyr| plyr['player_id'] == ff_id }
-    pj ? pj[league_type] : "0"
+    pj ? pj[type] : "0"
   end
 
   def team

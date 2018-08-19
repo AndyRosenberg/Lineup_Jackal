@@ -1,0 +1,22 @@
+<article class="d-inline-block pt-2 player-idx" id="<%= "edit-#{player.ff_id}" %>">
+    <h2>
+      <span class="ed-nm"><%= "#{player.full_name} (#{player.position})" %></span>
+      <%= link_to "&times;".html_safe, lineup_player_path(lineup, player), action: "destroy", method: "delete", remote: true, class: "btn btn-sm btn-danger ml-1 plyr-del" %>
+    </h2>
+    <figure class="edit-figure">
+      <img src=<%= @player_info.find {|pl| pl['ff_id'] == player.ff_id}['image'] %> />
+      <figcaption>
+        <small><em>nfl.com</em></small>
+      </figcaption>
+    </figure>
+    <br />
+    <%= label_tag "Status:", nil, class: "h4" %>
+    <br />
+    <%= label_tag "starter", "Start", class: "h6" %>
+    <%= radio_button_tag "plyr[#{player.id}[status]]", "starter", (checker == "starter") %>
+    <%= label_tag "flex", "Flex", class: "h6" %>
+    <%= radio_button_tag "plyr[#{player.id}[status]]", "flex", (checker == "flex") %>
+    <%= label_tag "bench", "Bench", class: "h6" %>
+    <%= radio_button_tag "plyr[#{player.id}[status]]", "bench", (checker == "bench") %>
+</article>
+

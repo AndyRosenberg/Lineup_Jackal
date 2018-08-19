@@ -1,0 +1,34 @@
+<h1 class="text-center p-2">New Team</h1>
+<%= form_tag lineups_path do %>
+  <div class="text-center">
+    <%= label_tag "lineup[name]", "Team Name:" %>
+    <br />
+    <%= text_field_tag "lineup[name]", nil, class: 'w-50 text-center' %>
+    <br />
+    <br />
+    <%= label_tag "lineup[league_type]", "Leage Type:" %>
+    <br />
+    <span>Standard</span>
+    <%= radio_button_tag "lineup[league_type]", "standard" %>
+    <span>PPR</span>
+    <%= radio_button_tag "lineup[league_type]", "ppr" %>
+  </div>
+  <br />
+  <% Statistic.draft.each do |pos, plyrs| %>
+    <h3 class="text-center"><%= pos %></h3>
+    <hr />
+    <div class="container">
+      <% plyrs.each do |ply| %>
+        <%= hidden_field_tag "lineup[players[][ff_id]]", ply["player_id"] %>
+        <%= check_box_tag "lineup[players[][full_name]]", ply["displayName"] %>
+        <%= label_tag "#{ply['displayName']} (Team: #{ply['team']}, Projected: #{ply['fantasyPoints']} pts.)" %>
+      <% end %>
+    </div>
+    <br />
+  <% end %>
+  <div class="text-center">
+    <%= submit_tag "Create", class: 'w-25'  %>
+  </div>
+
+<% end %>
+<hr />

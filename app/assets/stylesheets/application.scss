@@ -1,0 +1,139 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, or any plugin's
+ * vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
+ * files in this directory. Styles in this file should be added after the last require_* statement.
+ * It is generally better to create a new file per style scope.
+ */
+
+ @import "bootstrap";
+
+ .navbar-nav > *:not(div)  {
+  padding-left: 25px;
+  padding-right: 25px;
+}
+
+.btn-primary {
+  background: #2914A1;
+  border: #2914A1;
+  outline: #2914A1;
+}
+
+.btn-default {
+  background: #f9E55B;
+  color: #544C16;
+  border: .5px solid rgba(0, 0, 0, .3);
+}
+
+.btn-default:hover {
+  background: #F7E8AA;
+  opacity: .8;
+}
+
+.btn-default:active {
+  background: #f9E55B;
+  opacity: .9;
+}
+
+a.navbar-brand {
+  color: #1F1C08 !important;
+}
+
+nav.navbar.navbar-expand-lg {
+  background: #f9E55B !important;
+  border: .5px solid rgba(0, 0, 0, .3);
+}
+
+.comparison {
+  color: SlateGrey;
+}
+
+#comparison-board, article {
+  border-bottom: .2px solid SlateGrey;
+  border-top: .2px solid SlateGrey;
+}
+
+.blink a {
+  color: rgba(142, 189, 240, 1);
+}
+
+body {
+  background: rgba(255, 250, 221, .1);
+}
+
+aside {
+  display: inline-block;
+}
+
+figure {
+  display: inline-block !important;
+  float: left;
+  vertical-align: top;
+}
+
+figcaption {
+  clear: left !important;
+}
+
+#inner-board {
+  width: 80%;
+  margin: 0 auto;
+  padding: 0 4rem;
+}
+
+#dl-opp, #dl-home {
+  vertical-align: top;
+}
+
+#dl-home {
+  margin-right: 2rem;
+  margin-left: 1rem;
+}
+
+#dl-opp {
+  margin-left: 3rem;
+}
+
+#opponent, #home-team {
+  margin: 0 10%;
+}
+
+article.player-idx, article.player-show {
+  border: .2px solid SlateGrey;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 2px 2px 2px #E0E0E0;
+  background: #FFF0B0;
+}
+
+figure.edit-figure {
+  float: none !important;
+}
+
+figure img {
+  border-radius: 12px;
+}
+
+.head-show {
+  background: rgba(31, 32, 255, .88);
+  color: white;
+  text-shadow: -1px 0 #222222, 0 1px #222222, 1px 0 #222222, 0 -1px #222222;
+}
+
+.plyr-del {
+  opacity: 0.5;
+}
+
+.plyr-del:hover, .plyr-del:active {
+  opacity: .98;
+}
+
+.ed-nm {
+  vertical-align: middle;
+}

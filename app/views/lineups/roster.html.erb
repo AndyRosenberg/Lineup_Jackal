@@ -1,0 +1,18 @@
+<h1>Set Your Roster</h1>
+<hr />
+<%= form_tag set_roster_lineup_path do %>
+  <% @players.each_with_index do |ply, idx| %>
+    <h2><%= "#{ply.full_name} (#{ply.position})" %></h2>
+    <%= label_tag "Status:" %>
+    <%= label_tag "starter", "Start" %>
+    <%= radio_button_tag "statuses[#{idx}[stat]]", "starter" %>
+    <%= label_tag "flex", "Flex" %>
+    <%= radio_button_tag "statuses[#{idx}[stat]]", "flex" %>
+    <%= label_tag "bench", "Bench" %>
+    <%= radio_button_tag "statuses[#{idx}[stat]]", "bench" %>
+    <%= hidden_field_tag "statuses[#{idx}[id]]", ply.id %>
+  <% end %>
+  <br />
+  <%= submit_tag "Set Lineup" %>
+<% end %>
+<hr />

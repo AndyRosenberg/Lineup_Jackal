@@ -1,0 +1,28 @@
+<main>
+  <h1 class="text-center p-3"><%= "#{@lineup.name} (#{@lineup.season})" %></h1>
+  <hr class="head-show" />
+  <h3 class="p-4 head-show">Starters</h3>
+  <hr class="head-show" />
+  <section class="pl-5 pr-5">
+    <% @starters.each do |player| %>
+      <div class="pt-2 pb-2">
+        <%= render 'player', player: player, flex: false %>
+      </div>
+    <% end %>
+    <% @flex.each do |player| %>
+      <div class="pt-2 pb-2">
+        <%= render 'player', player: player, flex: 'Flex' %>
+      </div>
+    <% end %>
+  </section>
+  <hr class="head-show" />
+  <h3 class="p-4 head-show">Bench</h3>
+  <hr class="head-show" />
+  <section class="pl-5 pr-5">
+    <% @bench.each do |player| %>
+      <div class="pt-2 pb-2">
+        <%= render 'player', player: player, flex: false %>
+      </div>
+    <% end %>
+  </section>
+</main>

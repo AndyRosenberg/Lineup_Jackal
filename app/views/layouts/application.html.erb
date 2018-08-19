@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>A Leagueless Fantasy Football Interface</title>
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <%= render 'layouts/navigation' %>
+    <% if flash[:notice] %>
+      <div class="alert alert-success" id="flash-notice"><%= flash[:notice] %></div>
+    <% elsif flash[:error] %>
+      <div class="alert alert-warning" id="flash-warning"><%= flash[:error] %></div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>

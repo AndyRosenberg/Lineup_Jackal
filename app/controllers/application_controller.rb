@@ -4,6 +4,10 @@ class ApplicationController < ActionController::Base
   def home
   end
 
+  def players
+    @players ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
+  end
+
   def current_user
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end

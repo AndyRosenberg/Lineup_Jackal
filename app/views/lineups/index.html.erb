@@ -1,19 +1,19 @@
 <div class="text-center p-3">
-  <h1>Your Lineups</h1>
+  <h1 class="bland-h1">Your Lineups</h1>
   <h4 class="blink"><%= link_to "+ Create a new lineup", new_lineup_path %></h4>
   <hr />
   <div class="text-left">
     <% @lineups.each do |lineup| %>
       <dl class="d-inline-block p-4" style="vertical-align: top !important">
-        <dt class="h4 blink"><%= link_to lineup.name, lineup_path(lineup) %></dt>
-        <dd>
+        <dt class="h4 blink text-center mr-2"><%= link_to lineup.name, lineup_path(lineup) %></dt>
+        <dd class="mx-2">
           <%= link_to "Add", lineup_players_path(lineup), class: "btn btn-default btn-idx" %>
           <%= link_to "Edit", edit_lineup_path(lineup), class: "btn btn-default btn-idx" %>
           <%= link_to "Comp", compare_lineup_path(lineup), class: "btn btn-default btn-idx" %>
         </dd>
         <hr />
         <% lineup.players.each do |plyr| %>
-          <dd><%= "#{plyr.full_name} (#{plyr.status})" %></dd>
+          <dd class="ml-2"><%= "#{plyr.full_name} (#{plyr.status})" %></dd>
         <% end %>
       </dl>
     <% end %>

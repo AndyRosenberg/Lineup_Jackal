@@ -3,20 +3,18 @@
     <h1 class="comparison" id="comparison-title"><%= @lineup.name %> vs opponent</h1>
     <hr />
     <div class="text-left" id="inner-board">
-      <dl class="d-inline-block col-md-5 p-2 comparison" id="dl-home">
+      <dl class="d-inline-block col-md-5 p-2 comparison text-center" id="dl-home">
         <div id="home-team">
           <% @starters.each do |plyr| %>
-            <dt class="h6 d-inline-block"><%= plyr[0].full_name %></dt>
-            <dd class="d-inline-block"><%= "#{plyr[0].position} - #{plyr[0].team}" %></dd>
-            <br />
-            <dd class='d-inline-block px-1'><b><%= plyr[2] %> points</b> (this week)</dd>
-            <dd class="d-inline-block"><%= plyr[1] %> points (season)</dd>
-            <br />
+            <dt class="h6"><%= plyr[0].full_name %><span class="px-1">&nbsp;</span><%= "#{plyr[0].position} - #{plyr[0].team}" %></dt>
+            <dd><b><%= plyr[2] %> points</b> (this week)</dd>
+            <dd><%= plyr[1] %> points (season)</dd>
+            <hr />
           <% end %>
-          <h4 class="pl-5 pr-5 pt-3"><%= @total %> points this week</h4>
+          <h4 class="text-center"><%= @total %> points this week</h4>
         </div>
       </dl>
-      <dl class="d-inline-block col-md-5 p-2 comparison" id= "dl-opp">
+      <dl class="d-inline-block col-md-5 p-2 comparison text-center" id= "dl-opp">
         <div id="opponent">
         </div>
       </dl>
@@ -24,23 +22,29 @@
   </div>
 </main>
 
-<h2 class="text-center p-2">Pick Players:</h2>
-<hr />
 <%= form_tag add_comparison_lineup_path, remote: true, class: "mt-2 mb-2" do %>
+  <h2 class="text-center p-2 bland-h1">Pick Players:</h2>
+  <div class="text-center mb-4">
+    <%= submit_tag "Compare", class: "btn btn-default btn-idx" %>
+  </div>
+
   <% Statistic.draft.each do |pos, plyrs| %>
-    <h3 class="text-center"><%= pos %></h3>
-    <hr />
-    <div class="container">
-      <% plyrs.each do |ply| %>
+     <hr class="head-show" />
+    <h3 class="text-center head-show"><%= pos %></h3>
+    <hr class="head-show mb-4" />
+    <div class="text-center">
+      <% plyrs.each_with_index do |ply, idx| %>
         <%= hidden_field_tag "lineup[players[][ff_id]]", ply["player_id"] %>
         <%= check_box_tag "lineup[players[][full_name]]", ply["displayName"] %>
         <%= label_tag "#{ply['displayName']} (Team: #{ply['team']}, Projected: #{ply['fantasyPoints']} pts.)" %>
+        <% if (idx + 1) % 3 == 0 && (idx + 1) > 1 %>
+          <br />
+        <% end %> 
       <% end %>
     </div>
-    <br />
   <% end %>
   <div class="text-center">
-    <%= submit_tag "Compare", class: "btn btn-default" %>
+    <%= submit_tag "Compare", class: "btn btn-default btn-idx" %>
   </div>
 <% end %>
 

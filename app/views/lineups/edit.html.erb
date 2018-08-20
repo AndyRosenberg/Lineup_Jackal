@@ -1,5 +1,5 @@
 <main class="text-center">
-  <h1 class="m-3">Edit Your Roster</h1>
+  <h1 class="m-3 bland-h1">Edit Your Roster</h1>
   <hr />
   <%= form_tag lineup_path(@lineup), action: 'update', method: 'PUT', class: 'd-inline-block w-100' do %>
     <% @lineup.players.each do |player| %>

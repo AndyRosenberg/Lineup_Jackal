@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   root to: 'application#home', as: 'home'
+  get '/players', to: 'application#players', as: 'all_players'
   # get: 'application#matchup', as: 'matchup'
   get '/login', to: 'sessions#new', as: 'login'
   post '/login', to: 'sessions#create', as: 'sign_in'

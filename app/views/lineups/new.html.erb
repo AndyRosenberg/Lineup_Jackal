@@ -14,7 +14,7 @@
     <%= radio_button_tag "lineup[league_type]", "ppr" %>
   </div>
   <div class="text-center mt-4">
-    <%= submit_tag "Compare", class: "btn btn-default btn-idx" %>
+    <%= submit_tag "Set Roster", class: "btn btn-default btn-idx" %>
   </div>
   <br />
   <% Statistic.draft.each do |pos, plyrs| %>
@@ -35,7 +35,7 @@
     <br />
   <% end %>
   <div class="text-center">
-    <%= submit_tag "Create", class: 'w-25'  %>
+    <%= submit_tag "Set Roster", class: 'w-25 btn btn-default btn-idx'  %>
   </div>
 
 <% end %>

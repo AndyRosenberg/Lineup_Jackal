@@ -1,27 +1,35 @@
-<h1 class="text-center p-2">New Team</h1>
+<h1 class="text-center p-2 bland-h1">New Team</h1>
 <%= form_tag lineups_path do %>
   <div class="text-center">
-    <%= label_tag "lineup[name]", "Team Name:" %>
+    <%= label_tag "lineup[name]", "Team Name:", class: "h4" %>
     <br />
     <%= text_field_tag "lineup[name]", nil, class: 'w-50 text-center' %>
     <br />
     <br />
-    <%= label_tag "lineup[league_type]", "Leage Type:" %>
+    <%= label_tag "lineup[league_type]", "Leage Type:", class: "h4 mb-2"  %>
     <br />
     <span>Standard</span>
     <%= radio_button_tag "lineup[league_type]", "standard" %>
     <span>PPR</span>
     <%= radio_button_tag "lineup[league_type]", "ppr" %>
   </div>
+  <div class="text-center mt-4">
+    <%= submit_tag "Compare", class: "btn btn-default btn-idx" %>
+  </div>
   <br />
   <% Statistic.draft.each do |pos, plyrs| %>
-    <h3 class="text-center"><%= pos %></h3>
-    <hr />
-    <div class="container">
-      <% plyrs.each do |ply| %>
+    <hr class="head-show" />
+    <h3 class="text-center head-show"><%= pos %></h3>
+    <hr class="head-show mb-4" />
+
+    <div class="text-center">
+      <% plyrs.each_with_index do |ply, idx| %>
         <%= hidden_field_tag "lineup[players[][ff_id]]", ply["player_id"] %>
         <%= check_box_tag "lineup[players[][full_name]]", ply["displayName"] %>
         <%= label_tag "#{ply['displayName']} (Team: #{ply['team']}, Projected: #{ply['fantasyPoints']} pts.)" %>
+        <% if (idx + 1) % 3 == 0 && (idx + 1) > 1 %>
+          <br />
+        <% end %> 
       <% end %>
     </div>
     <br />

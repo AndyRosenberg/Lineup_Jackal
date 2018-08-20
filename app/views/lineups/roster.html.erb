@@ -1,18 +1,31 @@
-<h1>Set Your Roster</h1>
-<hr />
-<%= form_tag set_roster_lineup_path do %>
-  <% @players.each_with_index do |ply, idx| %>
-    <h2><%= "#{ply.full_name} (#{ply.position})" %></h2>
-    <%= label_tag "Status:" %>
-    <%= label_tag "starter", "Start" %>
-    <%= radio_button_tag "statuses[#{idx}[stat]]", "starter" %>
-    <%= label_tag "flex", "Flex" %>
-    <%= radio_button_tag "statuses[#{idx}[stat]]", "flex" %>
-    <%= label_tag "bench", "Bench" %>
-    <%= radio_button_tag "statuses[#{idx}[stat]]", "bench" %>
-    <%= hidden_field_tag "statuses[#{idx}[id]]", ply.id %>
+<div class="text-center">
+  <h1 class="bland-h1 m-4">Set Your Roster</h1>
+  <hr />
+  <%= form_tag set_roster_lineup_path do %>
+    <div class="d-inline-block w-100">
+      <% @players.each_with_index do |ply, idx| %>
+        <article class="d-inline-block pt-2 player-idx">
+          <h2 class="bland-h1"><%= "#{ply.full_name} (#{ply.position})" %></h2>
+          <%= label_tag "Status:" %>
+          <%= label_tag "starter", "Start" %>
+          <%= radio_button_tag "statuses[#{idx}[stat]]", "starter" %>
+          <%= label_tag "flex", "Flex" %>
+          <%= radio_button_tag "statuses[#{idx}[stat]]", "flex" %>
+          <%= label_tag "bench", "Bench" %>
+          <%= radio_button_tag "statuses[#{idx}[stat]]", "bench" %>
+          <%= hidden_field_tag "statuses[#{idx}[id]]", ply.id %>
+          <br />
+          <figure class="roster-figure">
+            <img src=<%= @pics.find{|pl| pl['ff_id'] == ply.ff_id }['image'] %> />
+            <figcaption>
+              <small><em>nfl.com</em></small>
+            </figcaption>
+          </figure>
+        </article>
+      <% end %>
+    </div>
+    <br />
+    <%= submit_tag "Set Lineup", class: 'btn btn-default btn-lg btn-idx m-3' %>
   <% end %>
-  <br />
-  <%= submit_tag "Set Lineup" %>
-<% end %>
-<hr />
+  <hr />
+</div>

@@ -88,18 +88,16 @@ class LineupsController < ApplicationController
       player = Player.new(plyr.to_h)
       player.lineup_id = params[:id]
       player.position =  Statistic.find_player(player.ff_id)['position']
+      @list += "<div class='one-opp'><a class='del-comp' data-week=#{player.weekly}>&times;</a>"
       @list += "<dt class='h6'>#{player.full_name}"
       @list += "<span class='px-1'>&nbsp;</span>#{player.position} - #{player.team}</dt>"
       @list += "<dd class='d-inline-block px-1'><b>#{player.weekly} points</b> (this week)</dd>"
-      @list += "<dd class='d-inline-block px-1'>#{player.projected} points (season)</dd><hr />"
+      @list += "<dd class='d-inline-block px-1'>#{player.projected} points (season)</dd><hr /></div>"
       @total2 += player.weekly.to_i
     end
 
     @list = @list.html_safe
-    @total2 = "<h4 class='text-center'>#{@total2} points this week</h4>".html_safe
-  end
-
-  def drop_comparison
+    @total2 = "<h4 class='text-center' id='opp-total' data-total=#{@total2}>#{@total2} points this week</h4>".html_safe
   end
 
   def roster

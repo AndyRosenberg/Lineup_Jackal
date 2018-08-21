@@ -22,5 +22,21 @@ $(document).on('turbolinks:load', function() {
   $('#matchup').hover(function(e) {
       $(this).text('Coming Soon!');
   }, function(e2) { $(this).text('Matchup') });
+  
+  $('#opponent').on('click', '.del-comp', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    var neg = Math.round(Number($(this).data('week')));
+    var tot = Number($('#opp-total').data('total'));
+    var now = tot - neg
+    now = now < 0 ? 0 : now;
+
+    $(this).parents('.one-opp').remove();
+
+    now = $('.del-comp').length === 1 ? Math.round(Number($('.del-comp').first().data('week'))) : now;
+
+    $('#opp-total').text(String(now) + " points this week");
+    $('#opp-total').data('total', now);
+  });
 
 });

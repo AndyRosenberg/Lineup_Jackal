@@ -11,7 +11,6 @@ Rails.application.routes.draw do
     member do
       get 'compare'
       post 'add_comparison'
-      delete 'drop_comparison'
       get 'roster'
       post 'set_roster'
     end

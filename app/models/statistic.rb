@@ -110,8 +110,9 @@ class Statistic < ActiveRecord::Base
 
     ((current.year - num)...current.year).to_a.reverse.each do |year|
       2.times do |n|
-        url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=#{n + 1}&Segment=#{yr_code}"
-        if n + 1 == 1 
+        score = n == 0 ? 10 : 2
+        url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=#{score}&Segment=#{yr_code}"
+        if n == 0
           result["#{year}_standard"] = gen_prev(url) 
         else 
           result["#{year}_ppr"] = gen_prev(url)
@@ -140,8 +141,9 @@ class Statistic < ActiveRecord::Base
     end
 
     2.times do |n|
-      url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=#{n + 1}&Segment=#{yr_code}"
-      if n + 1 == 1 
+      score = n == 0 ? 10 : 2
+      url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=#{score}&Segment=#{yr_code}"
+      if n == 0
         result["#{current.year}_standard"] = gen_prev(url) 
       else 
         result["#{current.year}_ppr"] = gen_prev(url)

@@ -1,0 +1,95 @@
+<div class="text-center">
+  <h1 class="p-3 bland-h1"><%= @player['full_name'] %></h1>
+  <h3 class="bland-h1"><%= "#{@player['position']} - #{@player['team']}" %></h3>
+  <article class="d-block p-4 player-show w-75 mx-auto">
+    <figure class="roster-figure">
+      <img src=<%= @player['image'] %> />
+      <figcaption>
+        <small><em>nfl.com</em></small>
+      </figcaption>
+    </figure>
+    <aside class="mb-3 ml-1">
+      <dl>
+        <dt>
+          Projected This Week:
+        </dt>
+        <dd>
+          <%= @player["weekly_standard"] %> points (standard)
+        </dd>
+        <dd>
+          <%= @player["weekly_ppr"] %> points (ppr)
+        </dd>
+
+        <dt>
+          Projected This Year:
+        </dt>
+        <dd>
+          <%= @player['projected'] %> points
+        </dd>
+
+        <dt class="pt-2">
+          Standard Stats:
+        </dt>
+        <dd>
+          <em>Weekly:</em>
+          <br />
+          <% if @player['standard_wks'] == "N/A" %>
+            <div>N/A</div>
+          <% else %>
+            <% @player['standard_wks'].each do |arr| %>
+              <span class="text-left"><%= arr[0] %>:</span>
+              <small class="text-left"><%= arr[1] %></small>
+              <br />
+            <% end %>
+          <% end %>
+        </dd>
+        <dd>
+          <em>Past Seasons:</em>
+          <br />
+          <% if @player['standard_yrs'] == "N/A" %>
+            <div>N/A</div>
+          <% else %>
+            <% @player['standard_yrs'].each do |arr| %>
+              <span class="text-left"><%= arr[0] %>:</span>
+              <small class="text-left"><%= arr[1] %></small>
+              <br />
+            <% end %>
+          <% end %>
+        </dd>
+
+        <dt class="pt-2">
+          PPR Stats:
+        </dt>
+        <dd>
+          <em>Weekly:</em>
+          <br />
+          <% if @player['ppr_wks'] == "N/A" %>
+            <div>N/A</div>
+          <% else %>
+            <% @player['ppr_wks'].each do |arr| %>
+              <span class="text-left"><%= arr[0] %>:</span>
+              <small class="text-left"><%= arr[1] %></small>
+              <br />
+            <% end %>
+          <% end %>
+        </dd>
+        <dd>
+          <em>Past Seasons:</em>
+          <br />
+          <% if @player['ppr_yrs'] == "N/A" %>
+            <div>N/A</div>
+          <% else %>
+            <% @player['ppr_yrs'].each do |arr| %>
+              <span class="text-left"><%= arr[0] %>:</span>
+              <small class="text-left"><%= arr[1] %></small>
+              <br />
+            <% end %>
+          <% end %>
+        </dd>
+
+      </dl>
+    </aside>
+    <br />
+    <%= link_to "Back", :back, class: "btn btn-default btn-lg" %>
+  </article>
+</div>

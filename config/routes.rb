@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root to: 'application#home', as: 'home'
-  get '/players', to: 'application#players', as: 'all_players'
   # get: 'application#matchup', as: 'matchup'
   get '/login', to: 'sessions#new', as: 'login'
   post '/login', to: 'sessions#create', as: 'sign_in'
@@ -8,13 +7,21 @@ Rails.application.routes.draw do
 
   resources :users
   resources :lineups do
-    resources :players, only: [:index, :create, :show, :destroy]
+    resources :players, only: [:index, :create, :destroy]
     member do
       get 'compare'
       post 'add_comparison'
       delete 'drop_comparison'
       get 'roster'
       post 'set_roster'
+    end
+  end
+
+  resources :players, only: [:show] do
+    collection do
+      # get 'search'
+      get 'all', to: 'players#flex_index', as: 'all'
+      post 'flex_create', as: 'flex_create'
     end
   end
 end

@@ -1,11 +1,15 @@
 class PlayersController < ApplicationController
-  before_action :require_user
-  before_action :find_lineup
+  before_action :require_user, except: [:show, :flex_index]
+  before_action :find_lineup, except: [:show, :flex_index]
 
   def index
     everything ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
     @all_players ||= @lineup.filter_players(everything)
     @type = @lineup.league_type
+  end
+
+  def flex_index
+    @players ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(300)
   end
 
   def create
@@ -17,7 +21,33 @@ class PlayersController < ApplicationController
     render "added" if player.save
   end
 
-  def show; end
+  def flex_create
+    params.permit!
+    player = Player.fake_show(JSON.parse(params[:player]))
+    if Lineup.find(params[:lineup_id]).players.where(ff_id: player.ff_id).first
+      flash[:error] = "Player already exists in this lineup."
+    else
+      player.status = "bench"
+      player.lineup_id = params[:lineup_id]
+      if player.save
+        flash[:notice] = "#{player.full_name} added to #{Lineup.find(params[:lineup_id]).name}."
+      else
+        flash[:error] = "Something went wrong."
+      end
+    end
+    redirect_to "#{all_players_path}##{player.ff_id}"
+  end
+
+  def show
+    @player = Statistic.everything.find { |pl| pl['ff_id'] == params[:id] }
+    redirect_to home_path unless @player
+    standard = Statistic.standard.find { |pl| pl['ff_id'] == params[:id] }
+    ppr = Statistic.ppr.find { |pl| pl['ff_id'] == params[:id] }
+    @player['standard_yrs'] = standard['yrs']
+    @player['standard_wks'] = standard['wks']
+    @player['ppr_yrs'] = ppr['yrs']
+    @player['ppr_wks'] = ppr['wks']
+  end
 
   def destroy
     player = Player.find(params[:id])

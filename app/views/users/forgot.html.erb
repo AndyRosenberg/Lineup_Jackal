@@ -5,4 +5,5 @@
     <%= form.email_field :email, bootstrap: {label: {value: "Your email:", class: "ml-3"}}, class: "ml-3 col-md-6" %>
     <%= form.submit "Send Reset Link", class: "ml-3" %>
   <% end %>
+  <small class="ml-3"><%= link_to "Go Back", login_path, class: "blink" %></small>
 </div>

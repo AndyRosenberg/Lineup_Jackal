@@ -6,4 +6,5 @@
     <%= form.password_field :password , bootstrap: {label: {value: "Set Password:", class: "ml-3"}}, class: "ml-3 col-md-6" %>
     <%= form.submit "Log In", class: "ml-3" %>
   <% end %>
+  <small class="ml-3"><%= link_to "Forgot Password?", forgot_users_path, class: "blink" %></small>
 </div>

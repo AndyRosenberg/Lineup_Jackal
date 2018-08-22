@@ -38,16 +38,16 @@ class UsersController < ApplicationController
           flash[:error] = "Something went wrong, please try again."
         end
     else
-      flash[:error] = "No user found with email #{params[:email}."
+      flash[:error] = "No user found with email #{params[:email]}."
     end
 
-    redirect_to :back
+    redirect_to forgot_users_path
   end
 
   def reset 
     @user = User.find_by(token: params[:id])
     opened_time = DateTime.now
-    unless @user && @user.sent_time < opened_time.days_ago(1)
+    unless @user && @user.sent_time > opened_time.days_ago(1)
       flash[:error] = "Please try again."
       redirect_to forgot_users_path 
     end
@@ -59,9 +59,9 @@ class UsersController < ApplicationController
     if @user
       params.permit!
       @user.password = params[:password]
-      if @user.update
-        @user.update_column(token: nil)
-        @user.update_column(sent_time: nil)
+      if @user.save
+        @user.update_column(:token, nil)
+        @user.update_column(:sent_time, nil)
         flash[:notice] = "Password successfully reset."
         redirect_to login_path
       else

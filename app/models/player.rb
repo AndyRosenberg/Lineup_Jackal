@@ -1,6 +1,7 @@
 class Player < ActiveRecord::Base
   belongs_to :lineup
   validates :ff_id, uniqueness: { scope: :lineup, message: "Only one per lineup" }
+  default_scope { order(id: :asc) }
   delegate :league_type, to: :lineup
 
   def self.fake(hsh, pname = 'display_name', ppos = 'position', pid = 'player_id')

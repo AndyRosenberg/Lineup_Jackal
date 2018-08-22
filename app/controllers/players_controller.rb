@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
-  before_action :require_user, except: [:show, :flex_index]
-  before_action :find_lineup, except: [:show, :flex_index]
+  before_action :require_user, except: [:show, :flex_index, :search]
+  before_action :find_lineup, except: [:show, :flex_index, :search]
 
   def index
     everything ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
@@ -10,6 +10,20 @@ class PlayersController < ApplicationController
 
   def flex_index
     @players ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(300)
+  end
+
+  def search
+    if params[:query].blank?
+      @players = []
+    else
+      @players ||= Statistic.everything.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
+
+      if !@players.blank?
+        @players = @players.sort {|a, b| b['projected'].to_i - a['projected'].to_i}
+      end
+    end
+
+    render 'flex_index'
   end
 
   def create

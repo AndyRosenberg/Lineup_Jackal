@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-  helper_method :current_user, :logged_in?, :require_user, :correct_user?
+  helper_method :current_user, :logged_in?, :require_user
 
   def home
   end
@@ -19,7 +19,4 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def correct_user?(obj)
-    current_user && (obj.user == current_user)
-  end
 end

@@ -29,7 +29,7 @@ Rails.application.routes.draw do
 
   resources :players, only: [:show] do
     collection do
-      # get 'search'
+      get 'search'
       get 'all', to: 'players#flex_index', as: 'all'
       post 'flex_create', as: 'flex_create'
     end

@@ -20,7 +20,7 @@
         <a class="nav-link" id="matchup" href="#">Matchup</a>
       </li>
 
-        <%= bootstrap_form_with url: "", bootstrap: {layout: "inline"} do |f| %>
+        <%= bootstrap_form_with url: search_players_path, bootstrap: {layout: "inline"}, method: "GET", data: {remote: false} do |f| %>
 
           <%= f.search_field :query, class: "mr-sm-2", placeholder: "Search Players", bootstrap: {label: {hide: true}} %>
 
@@ -30,7 +30,7 @@
     </ul>
     <ul class="navbar-nav navbar-right">
       <% if logged_in? %>
-        <li><%= link_to "Settings", '', class: "nav-link" %></li>
+        <li><%= link_to "Settings", edit_user_path(current_user), class: "nav-link" %></li>
         <li><%= link_to "Log Out", logout_path, method: "delete", class: "nav-link" %></li>
       <% else %>
         <li><%= link_to "Sign Up", new_user_path, class: "nav-link" %></li>

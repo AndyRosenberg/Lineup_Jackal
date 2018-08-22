@@ -1,6 +1,7 @@
 class LineupsController < ApplicationController
   before_action :require_user
   before_action :find_lineup, only: [:show, :compare, :roster, :edit, :update, :destroy]
+  before_action :access_denied?, only: [:show, :compare, :roster, :edit, :update, :destroy]
 
   def index
     @lineups = current_user.lineups
@@ -38,11 +39,11 @@ class LineupsController < ApplicationController
   def show
     @type = @lineup.league_type
 
-    @starters = @lineup.select_players(Statistic.everything, 'starter')
+    @starters = @lineup.select_players(Statistic.everything, 'starter').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
     starters_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'starter')
     merge!(@starters, starters_stats)
 
-    @bench = @lineup.select_players(Statistic.everything, 'bench')
+    @bench = @lineup.select_players(Statistic.everything, 'bench').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
     bench_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'bench')
     merge!(@bench, bench_stats)
 
@@ -135,9 +136,14 @@ class LineupsController < ApplicationController
 
   private
   def find_lineup
-    @lineup = Lineup.find(params[:id])
+    if Lineup.exists?(id: params[:id])
+      @lineup = Lineup.find(params[:id])
+    else
+      flash[:error] = "Lineup doesn't exist."
+      redirect_to home_path 
+    end
   end
-  
+
   def merge!(lineup1, lineup2)
     lineup1.each do |l1|
       match = lineup2.find {|l2| l1['ff_id'] == l2['ff_id'] }
@@ -145,6 +151,13 @@ class LineupsController < ApplicationController
         l1['yrs'] = match['yrs']
         l1['wks'] = match['wks']
       end
+    end
+  end
+
+  def access_denied?
+    unless Lineup.find(params[:id]).user == current_user
+      flash[:error] = "Access Denied"
+      redirect_to home_path 
     end
   end
 end

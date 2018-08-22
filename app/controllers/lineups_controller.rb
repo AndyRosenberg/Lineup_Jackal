@@ -72,7 +72,11 @@ class LineupsController < ApplicationController
     redirect_to edit_lineup_path(@lineup)
   end
 
-  def destroy; end
+  def destroy
+    flash[:notice] = "Lineup '#{@lineup.name}' deleted."
+    @lineup.delete
+    redirect_to lineups_path
+  end
 
   def compare
     @starters = @lineup.starters.map  {|st| [st, st.projected, st.weekly] }

@@ -4,7 +4,7 @@
   <%= bootstrap_form_with model: @user do |form| %>
     <%= form.email_field :email, bootstrap: {label: {value: "Your email:", class: "ml-3"}}, class: "ml-3 col-md-6" %>
     <%= form.text_field :username, bootstrap: {label: {value: "Create Username:", class: "ml-3"}}, class: "ml-3 col-md-6" %>
-    <%= form.password_field :password , bootstrap: {label: {value: "Set Password:", class: "ml-3"}}, class: "ml-3 col-md-6" %>
+    <%= form.password_field :password , bootstrap: {label: {value: "Set Password:", class: "ml-3"}}, class: "ml-3 col-md-6", minlength: "7" %>
     <%= form.submit "Sign Up", class: "ml-3" %>
   <% end %>
 </div>

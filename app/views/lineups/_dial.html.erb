@@ -1,7 +1,7 @@
 <article class="d-inline-block pt-2 player-idx" id="<%= "edit-#{player.ff_id}" %>">
     <h2>
       <span class="ed-nm"><%= "#{player.full_name} (#{player.position})" %></span>
-      <%= link_to "&times;".html_safe, lineup_player_path(lineup, player), action: "destroy", method: "delete", remote: true, class: "btn btn-sm btn-danger ml-1 plyr-del" %>
+      <%= link_to "&times;".html_safe, lineup_player_path(lineup, player), action: "destroy", method: "delete", remote: true, class: "btn btn-sm btn-danger ml-1 lineup-del" %>
     </h2>
     <figure class="edit-figure">
       <img src=<%= @player_info.find {|pl| pl['ff_id'] == player.ff_id}['image'] %> />

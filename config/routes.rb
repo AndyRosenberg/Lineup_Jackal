@@ -5,7 +5,18 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create', as: 'sign_in'
   delete '/logout', to: 'sessions#destroy', as: 'logout'
 
-  resources :users
+  resources :users do
+    collection do
+      get 'forgot'
+      post 'validate_forgot'
+    end
+
+    member do 
+      get 'reset'
+      post 'validate_reset'
+    end
+  end
+
   resources :lineups do
     resources :players, only: [:index, :create, :destroy]
     member do

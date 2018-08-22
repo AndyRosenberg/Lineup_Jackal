@@ -1,0 +1,8 @@
+<h1 class="ml-2 mt-2">Reset Your Password</h1>
+<hr  class="ml-3 col-md-3" />
+<div class="jumbotron">
+  <%= bootstrap_form_with url: validate_forgot_users_path do |form| %>
+    <%= form.email_field :email, bootstrap: {label: {value: "Your email:", class: "ml-3"}}, class: "ml-3 col-md-6" %>
+    <%= form.submit "Send Reset Link", class: "ml-3" %>
+  <% end %>
+</div>

@@ -126,11 +126,17 @@ figure img {
   text-shadow: -1px 0 #222222, 0 1px #222222, 1px 0 #222222, 0 -1px #222222;
 }
 
-.plyr-del {
-  opacity: 0.5;
+.plyr-del, .lineup-del {
+    opacity: 0.5;
 }
 
-.plyr-del:hover, .plyr-del:active {
+.plyr-del {
+  line-height: 1.1;
+  font-size: 20px;
+  vertical-align: top;
+}
+
+.plyr-del:hover, .plyr-del:active, .lineup-del:hover, .lineup-del:active {
   opacity: .98;
 }
 
@@ -181,4 +187,14 @@ hr {
   right: .5rem;
   font-size: 34px;
   padding-top: .78rem;
+}
+
+.lineup-del {
+  float: right;
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  line-height: 1;
 }

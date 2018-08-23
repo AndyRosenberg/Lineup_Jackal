@@ -98,57 +98,28 @@ class Statistic < ActiveRecord::Base
 
   def self.prev_n_years(num)
     result = {}
-    yr_code = ''
     current = DateTime.now
-    last_2 = current.year.to_s[-2, 2].to_i
-
-    if current.month < 3
-      yr_code = ((last_2 - 1) * 32) + 13
-    else
-      yr_code = (last_2 * 32) + 13
-    end
+    yr_code = determine_year_code(current, 'past')
 
     ((current.year - num)...current.year).to_a.reverse.each do |year|
-      2.times do |n|
-        score = n == 0 ? 10 : 2
-        url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=#{score}&Segment=#{yr_code}"
-        if n == 0
-          result["#{year}_standard"] = gen_prev(url) 
-        else 
-          result["#{year}_ppr"] = gen_prev(url)
-        end
-      end
-
+      fantasy_sharks(result, yr_code, year)
       yr_code -= 32
     end
+
     result
   end
 
   def self.this_year(week = nil)
     result = {}
-    yr_code = ''
     current = DateTime.now
-    last_2 = current.year.to_s[-2, 2].to_i
-
-    if current.month < 3
-      yr_code = (last_2 * 32) + 13
-    else
-      yr_code = ((last_2 + 1) * 32) + 13
-    end
+    yr_code = determine_year_code(current, 'present')
 
     if week
       yr_code += (6 + week)
     end
 
-    2.times do |n|
-      score = n == 0 ? 10 : 2
-      url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=#{score}&Segment=#{yr_code}"
-      if n == 0
-        result["#{current.year}_standard"] = gen_prev(url) 
-      else 
-        result["#{current.year}_ppr"] = gen_prev(url)
-      end
-    end
+    fantasy_sharks(result, yr_code, current.year)
+
     result
   end
 
@@ -192,7 +163,7 @@ class Statistic < ActiveRecord::Base
   end
 
   def self.gen_prev(url)
-    scrape = HTTParty.get(url, timeout: 5000)
+    scrape = HTTParty.get(url)
 
     scrape = Nokogiri::HTML(scrape)
 
@@ -209,6 +180,30 @@ class Statistic < ActiveRecord::Base
       end
       result
     end.compact
+  end
+
+  def self.fantasy_sharks(result, yr_code, year)
+    url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=10&Segment=#{yr_code}"
+    result["#{year}_standard"] = gen_prev(url) 
+    result["#{year}_ppr"] = gen_prev(url)
+  end
+
+  def self.determine_year_code(current, tense)
+    last_2 = current.year.to_s[-2, 2].to_i
+
+    if tense == 'present'
+      if current.month < 3
+        (last_2 * 32) + 13
+      else
+        ((last_2 + 1) * 32) + 13
+      end
+    else
+      if current.month < 3
+        ((last_2 - 1) * 32) + 13
+      else
+        (last_2 * 32) + 13
+      end
+    end
   end
 
 end

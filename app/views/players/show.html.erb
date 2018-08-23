@@ -28,40 +28,10 @@
         </dd>
 
         <dt class="pt-2">
-          Standard Stats:
+          Past Stats (PPR):
         </dt>
         <dd>
-          <em>Weekly:</em>
-          <br />
-          <% if @player['standard_wks'] == "N/A" %>
-            <div>N/A</div>
-          <% else %>
-            <% @player['standard_wks'].each do |arr| %>
-              <span class="text-left"><%= arr[0] %>:</span>
-              <small class="text-left"><%= arr[1] %></small>
-              <br />
-            <% end %>
-          <% end %>
-        </dd>
-        <dd>
-          <em>Past Seasons:</em>
-          <br />
-          <% if @player['standard_yrs'] == "N/A" %>
-            <div>N/A</div>
-          <% else %>
-            <% @player['standard_yrs'].each do |arr| %>
-              <span class="text-left"><%= arr[0] %>:</span>
-              <small class="text-left"><%= arr[1] %></small>
-              <br />
-            <% end %>
-          <% end %>
-        </dd>
-
-        <dt class="pt-2">
-          PPR Stats:
-        </dt>
-        <dd>
-          <em>Weekly:</em>
+          <em>This Year:</em>
           <br />
           <% if @player['ppr_wks'] == "N/A" %>
             <div>N/A</div>

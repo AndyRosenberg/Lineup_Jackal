@@ -12,12 +12,6 @@ class Player < ActiveRecord::Base
     fake(hsh, 'full_name', 'position', 'ff_id')
   end
 
-  def self.last_5(name, type)
-    Statistic.last_5.map do |k, v|
-      {k => v.select {|plyr| plyr['player'].downcase == name.split(' ').reverse.join(', ').downcase }.first}
-    end.select {|hsh| hsh.keys[0].include?(type)}
-  end
-
   def last_5(no_type = nil)
     type = no_type || league_type
     Statistic.last_5.map do |k, v|
@@ -37,10 +31,13 @@ class Player < ActiveRecord::Base
     type = no_type || league_type
     result = []
     flattened = []
-    if !last_5(type).first.values[0]
+    attempt = last_5(type)
+    if !attempt.first.values[0] && !attempt[1].values[0]
       split = full_name.split(' ')
       joined = split[0..1].join(' ')
-      short = Player.last_5(joined, type)
+      short = self.clone
+      short.full_name = joined
+      short = short.last_5(type)
       if short.first.values[0]
         flattened = short.flat_map(&:to_a)
       else
@@ -75,7 +72,7 @@ class Player < ActiveRecord::Base
 
   def weeks_this_year(no_type = nil)
     type = no_type || league_type
-    Statistic.this_year.map do |k, v|
+    Statistic.prev_weeks.map do |k, v|
       if position == 'DEF'
         test_name = full_name.split(' ')
         test_name = [(test_name[-1] + ',')] + test_name[0..-2]
@@ -91,10 +88,13 @@ class Player < ActiveRecord::Base
   # insert weeks stats into db
 
   def weeks_format(no_type = nil)
+    return "N/A" if CURRENT_WEEK == 1
     type = no_type || league_type
     result = []
     flattened = []
-    if !weeks_this_year(type).first.values[0]
+    attempt = weeks_this_year(type)
+
+    if !attempt.first.values[0]
       split = full_name.split(' ')
       joined = split[0..1].join(' ')
       short = self.clone

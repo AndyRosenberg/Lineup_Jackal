@@ -192,7 +192,7 @@ class Statistic < ActiveRecord::Base
   end
 
   def self.gen_prev(url)
-    scrape = HTTParty.get(url)
+    scrape = HTTParty.get(url, timeout: 5000)
 
     scrape = Nokogiri::HTML(scrape)
 

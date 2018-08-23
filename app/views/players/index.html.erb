@@ -1,33 +1,35 @@
 <h1 class="text-center m-3 bland-h1">Add Players:</h1>
 <hr />
-<% @all_players.each do |player| %>
-  <article class="d-inline-block pt-2 player-idx">
-    <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
-    <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
-    <figure "d-inline-block">
-      <img src=<%= player['image'] %> />
-      <figcaption>
-        <small><em>nfl.com</em></small>
-      </figcaption>
-    </figure>
-    <aside class="mb-3 ml-4">
-      <dl>
-        <dt>
-          Projected This Week:
-        </dt>
-        <dd>
-          <%= player["weekly_#{@type}"] %> points
-        </dd>
+<main class="px-4">
+  <% @all_players.each do |player| %>
+    <article class="d-inline-block pt-2 player-idx">
+      <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
+      <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
+      <figure "d-inline-block">
+        <img src=<%= player['image'] %> />
+        <figcaption>
+          <small><em>nfl.com</em></small>
+        </figcaption>
+      </figure>
+      <aside class="mb-3 ml-4">
+        <dl>
+          <dt>
+            Projected This Week:
+          </dt>
+          <dd>
+            <%= player["weekly_#{@type}"] %> points
+          </dd>
 
-        <dt>
-          Projected This Year:
-        </dt>
-        <dd>
-          <%= player['projected'] %> points
-        </dd>
+          <dt>
+            Projected This Year:
+          </dt>
+          <dd>
+            <%= player['projected'] %> points
+          </dd>
 
-      </dl>
-      <%= button_to "+ Add", { action: "create" }, class: "btn btn-primary", id: "button-#{player['ff_id']}", remote: true, params: { "player" => player } %>
-    </aside>
-  </article>
-<% end %>
+        </dl>
+        <%= button_to "+ Add", { action: "create" }, class: "btn btn-primary", id: "button-#{player['ff_id']}", remote: true, params: { "player" => player } %>
+      </aside>
+    </article>
+  <% end %>
+</main>

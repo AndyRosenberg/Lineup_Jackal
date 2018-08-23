@@ -1,79 +1,81 @@
-<h1 class="text-center m-3 bland-h1">All Players:</h1>
+<h1 class="text-center m-3 bland-h1">NFL Players:</h1>
 <hr />
-<% if logged_in? %>
-  <% @players.each do |player| %>
-    <article class="d-inline-block pt-2 player-idx" id='<%= "#{player['ff_id']}" %>'>
-      <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
-      <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
-      <figure "d-inline-block">
-        <img src=<%= player['image'] %> />
-        <figcaption>
-          <small><em>nfl.com</em></small>
-        </figcaption>
-      </figure>
-      <aside class="mb-3 ml-2">
-        <dl>
-          <dt>
-            Projected This Week:
-          </dt>
-          <dd>
-            <%= player["weekly_standard"] %> points (standard)
-          </dd>
-          <dd>
-            <%= player["weekly_ppr"] %> points (ppr)
-          </dd>
+  <main class="px-4">
+  <% if logged_in? %>
+    <% @players.each do |player| %>
+      <article class="d-inline-block pt-2 player-idx" id='<%= "#{player['ff_id']}" %>'>
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
+        <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
+        <figure "d-inline-block">
+          <img src=<%= player['image'] %> />
+          <figcaption>
+            <small><em>nfl.com</em></small>
+          </figcaption>
+        </figure>
+        <aside class="mb-3 ml-2">
+          <dl>
+            <dt>
+              Projected This Week:
+            </dt>
+            <dd>
+              <%= player["weekly_standard"] %> points (standard)
+            </dd>
+            <dd>
+              <%= player["weekly_ppr"] %> points (ppr)
+            </dd>
 
-          <dt>
-            Projected This Year:
-          </dt>
-          <dd>
-            <%= player['projected'] %> points
-          </dd>
+            <dt>
+              Projected This Year:
+            </dt>
+            <dd>
+              <%= player['projected'] %> points
+            </dd>
 
-        </dl>
+          </dl>
 
-          <%= form_tag flex_create_players_path do %>
-            <%= select_tag "lineup_id", options_from_collection_for_select(current_user.lineups, "id", "name"), class: 'idx-select' %>
-            <%= hidden_field_tag "player", player.to_json %>
-            <%= submit_tag "+ Add", class: "btn btn-primary btn-sm" %>
-          <% end %>
+            <%= form_tag flex_create_players_path do %>
+              <%= select_tag "lineup_id", options_from_collection_for_select(current_user.lineups, "id", "name"), class: 'idx-select' %>
+              <%= hidden_field_tag "player", player.to_json %>
+              <%= submit_tag "+ Add", class: "btn btn-primary btn-sm" %>
+            <% end %>
 
-      </aside>
-    </article>
+        </aside>
+      </article>
+    <% end %>
+  <% else %>
+    <% @players.each do |player| %>
+      <article class="d-inline-block pt-2 player-idx" id='<%= "#{player['ff_id']}" %>'>
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
+        <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
+        <figure "d-inline-block">
+          <img src=<%= player['image'] %> />
+          <figcaption>
+            <small><em>nfl.com</em></small>
+          </figcaption>
+        </figure>
+        <aside class="mb-3 ml-2">
+          <dl>
+            <dt>
+              Projected This Week:
+            </dt>
+            <dd>
+              <%= player["weekly_standard"] %> points (standard)
+            </dd>
+            <dd>
+              <%= player["weekly_ppr"] %> points (ppr)
+            </dd>
+
+            <dt>
+              Projected This Year:
+            </dt>
+            <dd>
+              <%= player['projected'] %> points
+            </dd>
+
+          </dl>
+
+        </aside>
+      </article>
+    <% end %>
   <% end %>
-<% else %>
-  <% @players.each do |player| %>
-    <article class="d-inline-block pt-2 player-idx" id='<%= "#{player['ff_id']}" %>'>
-      <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
-      <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
-      <figure "d-inline-block">
-        <img src=<%= player['image'] %> />
-        <figcaption>
-          <small><em>nfl.com</em></small>
-        </figcaption>
-      </figure>
-      <aside class="mb-3 ml-2">
-        <dl>
-          <dt>
-            Projected This Week:
-          </dt>
-          <dd>
-            <%= player["weekly_standard"] %> points (standard)
-          </dd>
-          <dd>
-            <%= player["weekly_ppr"] %> points (ppr)
-          </dd>
-
-          <dt>
-            Projected This Year:
-          </dt>
-          <dd>
-            <%= player['projected'] %> points
-          </dd>
-
-        </dl>
-
-      </aside>
-    </article>
-  <% end %>
-<% end %>
+</main>

@@ -30,3 +30,5 @@
 /config/master.key
 
 /config/environments/development.rb
+
+statistics.sql

@@ -18,13 +18,13 @@ class ApplicationRecord < ActiveRecord::Base
     draft = Statistic.find_or_create_by(name: "draft")
     draft.update(json: JSON.generate(rankings))
 
-    if !Statistic.find_by(name: "weekly")
-      weekly = {}
-      positions.each do |pos|
-        weekly[pos] = FFNerd.weekly_rankings(pos).map(&:to_h)
-      end
-      Statistic.create(name: "weekly", json: JSON.generate(weekly), week: CURRENT_WEEK)
+    weekly = {}
+    positions.each do |pos|
+      weekly[pos] = FFNerd.weekly_rankings(pos).map(&:to_h)
     end
+
+    past_weekly = Statistic.find_or_create_by(name: "weekly")
+    past_weekly.update(json: JSON.generate(weekly), week: CURRENT_WEEK)
 
     last_5 = Statistic.find_or_create_by(name: "last_5")
     last_5.update(json: JSON.generate(Statistic.prev_n_years(5)))
@@ -32,13 +32,9 @@ class ApplicationRecord < ActiveRecord::Base
     prev_weeks = Statistic.find_or_create_by(name: "prev_weeks")
     prev_weeks.update(json: JSON.generate(Statistic.prev_weeks))
 
-    imgs = Statistic.find_by(name: "images")
-
-    if !imgs
-      images = Statistic.active_players.map {|plyr| {plyr["player_id"] => Statistic.find_image(plyr["display_name"])} }.select{|pl| !pl.values.first.nil?}
-      imgs = Statistic.create(name: "images")
-      imgs.update(json: JSON.generate(images))
-    end
+    imgs = Statistic.find_or_create_by(name: "images")
+    images = Statistic.active_players.map {|plyr| {plyr["player_id"] => Statistic.find_image(plyr["display_name"])} }.select{|pl| !pl.values.first.nil?}
+    imgs.update(json: JSON.generate(images))
 
     everything = Statistic.find_or_create_by(name: "everything")
     everything.update(json: JSON.generate(Statistic.create_everything))

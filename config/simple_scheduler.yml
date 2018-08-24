@@ -1,4 +1,4 @@
 weekly_task:
   class: "WeeklyStatsJob"
   every: "1.week"
-  at: "Mon 7:00"
+  at: "Tue 7:00"

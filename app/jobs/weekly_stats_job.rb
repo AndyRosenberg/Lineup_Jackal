@@ -12,16 +12,9 @@ class WeeklyStatsJob < ApplicationJob
     old_weekly.update!(json: JSON.generate(weekly))
   end
 
-  def perform(everything = "everything", standard = "standard", ppr = "ppr")
+  def perform(everything = "everything")
     old_everything = Statistic.find_by(name: everything)
-    old_standard = Statistic.find_by(name: standard)
-    old_ppr = Statistic.find_by(name: ppr)
-
     old_everything.update!(json: JSON.generate(Statistic.create_everything))
-
-    old_standard.update!(json: JSON.generate(Statistic.update_weeks('standard')))
-
-    old_ppr.update!(json: JSON.generate(Statistic.update_weeks('ppr')))
   end
 
 end

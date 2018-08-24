@@ -4,6 +4,18 @@ Rails.application.configure do
   FFNerd.api_key = FFN_KEY
   CURRENT_WEEK = FFNerd.current_week.to_i
 
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    address:              'smtp.zoho.com',
+    port:                 587,
+    domain:               'lineupjackal.com',
+    user_name:            'jackal@lineupjackal.com',
+    password:             ENV['lj_zoho'],
+    authentication:       'plain',
+    enable_starttls_auto: true }
+
+  config.action_mailer.default_url_options = { host: 'lineupjackal.com' }
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

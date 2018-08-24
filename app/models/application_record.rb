@@ -2,8 +2,6 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def self.total_reload!
-    FFNerd.api_key = FFN_KEY
-
     all_players = JSON.generate(FFNerd.players.map(&:to_h))
     players = Statistic.find_or_create_by(name: "players")
     players.update(json: all_players)
@@ -44,5 +42,14 @@ class ApplicationRecord < ActiveRecord::Base
 
     ppr = Statistic.find_or_create_by(name: "ppr")
     ppr.update(json: JSON.generate(Statistic.create_stats("ppr")))
+  end
+
+  def self.update_week_stats
+    old_standard = Statistic.find_by(name: standard)
+    new_stats = JSON.generate(Statistic.update_weeks('standard'))
+    old_standard.update(json: new_stats)
+
+    old_ppr = Statistic.find_by(name: ppr)
+    old_ppr.update(json: new_stats)
   end
 end

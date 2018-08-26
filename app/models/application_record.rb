@@ -21,6 +21,10 @@ class ApplicationRecord < ActiveRecord::Base
       weekly[pos] = FFNerd.weekly_rankings(pos).map(&:to_h)
     end
 
+    current_injuries = FFNerd.injuries.map(&:to_h).select { |pl| pl[:player_id] && pl[:player_id] != "0" }
+    past_injuries = Statistic.find_or_create_by(name: "injuries")
+    past_injuries.update(json: JSON.generate(current_injuries))
+
     past_weekly = Statistic.find_or_create_by(name: "weekly")
     past_weekly.update(json: JSON.generate(weekly), week: CURRENT_WEEK)
 

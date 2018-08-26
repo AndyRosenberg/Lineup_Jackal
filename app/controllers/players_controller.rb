@@ -15,8 +15,9 @@ class PlayersController < ApplicationController
   def search
     if params[:query].blank?
       @players = []
+      flash[:error] = "No players matched your search."
     else
-      @players ||= Statistic.everything.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
+      @players ||= Statistic.everything.first(500).select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
 
       if !@players.blank?
         @players = @players.sort {|a, b| b['projected'].to_i - a['projected'].to_i}
@@ -55,10 +56,7 @@ class PlayersController < ApplicationController
   def show
     @player = Statistic.everything.find { |pl| pl['ff_id'] == params[:id] }
     redirect_to home_path unless @player
-    standard = Statistic.standard.find { |pl| pl['ff_id'] == params[:id] }
     ppr = Statistic.ppr.find { |pl| pl['ff_id'] == params[:id] }
-    @player['standard_yrs'] = standard['yrs']
-    @player['standard_wks'] = standard['wks']
     @player['ppr_yrs'] = ppr['yrs']
     @player['ppr_wks'] = ppr['wks']
   end

@@ -15,10 +15,12 @@ class Statistic < ActiveRecord::Base
     fakes.map do |fake|
       hsh = JSON.parse(fake.to_json)
       hsh["team"] = fake.team
+      hsh["injuries"] = fake.injuries
       hsh["projected"] = fake.projected
       hsh["weekly_standard"] = fake.weekly('standard')
       hsh["weekly_ppr"] = fake.weekly('ppr')
       hsh["image"] = fake.image
+      hsh["links"] = fake.more_links
       hsh
     end
   end
@@ -67,6 +69,10 @@ class Statistic < ActiveRecord::Base
 
   def self.images
     access('images')
+  end
+
+  def self.injuries
+    access('injuries')
   end
 
   def self.weeks_this_year

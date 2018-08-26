@@ -85,8 +85,6 @@ class Player < ActiveRecord::Base
     end.select {|hsh| hsh.keys[0].include?(type)}
   end
 
-  # insert weeks stats into db
-
   def weeks_format(no_type = nil)
     return "N/A" if CURRENT_WEEK == 1
     type = no_type || league_type
@@ -148,6 +146,20 @@ class Player < ActiveRecord::Base
   def self.image(ffid)
     img = Statistic.images.find {|img| img.include?(ffid)}
     img ? img[ffid] : "https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg"
+  end
+
+  def more_links
+    return nil if position == "DEF"
+    split = full_name.downcase.gsub(/[^a-z -]/, '').split(' ')[0..1]
+    minussed = split.join('-')
+    { "for4": "https://www.4for4.com/fantasy-football/player/#{minussed}",
+       "ffnerd": "https://www.fantasyfootballnerd.com/player/#{ff_id}/#{minussed}"
+    }
+  end
+
+  def injuries
+    inj = Statistic.injuries.find { |pl| pl['player_id'] == ff_id }
+    inj ? "#{inj['game_status'].split(' ').first} - #{inj['injury']}" : "None"
   end
 
 end

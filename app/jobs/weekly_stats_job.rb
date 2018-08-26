@@ -10,6 +10,10 @@ class WeeklyStatsJob < ApplicationJob
 
     old_weekly = Statistic.find_by(name: "weekly") 
     old_weekly.update!(json: JSON.generate(weekly))
+
+    current_injuries = FFNerd.injuries.map(&:to_h).select { |pl| pl[:player_id] && pl[:player_id] != "0" }
+    past_injuries = Statistic.find_or_create_by(name: "injuries")
+    past_injuries.update!(json: JSON.generate(current_injuries))
   end
 
   def perform(everything = "everything")

@@ -1,14 +1,32 @@
 <article class="d-block pt-2 player-show">
   <h4 class="p-1"><%= player['full_name'] %></h4>
-  <h6 class="pl-2"><%= "#{(flex || player['position'])} - #{player['team']}" %></h6>
   <figure>
     <img src=<%= player['image'] %> />
     <figcaption>
       <small><em>nfl.com</em></small>
+      <% unless player['position'] ==  "DEF" %>
+        <dl class='text-center'>
+          <dt>
+            Injuries:
+          </dt>
+          <dd>
+            <%= player["injuries"] %>
+          </dd>
+          <dt>
+            More info:
+          </dt>
+          <dd>
+            <%= link_to "4for4", player["links"]["for4"], target: "_blank", class: "plink bland-h1" %> | 
+            <%= link_to "FFNerd", player["links"]["ffnerd"], target: "_blank", class: "plink bland-h1" %>
+          </dd>
+        </dl>
+      <% end %>
     </figcaption>
   </figure>
   <aside class="mb-3 ml-4">
     <dl>
+      <dt>Position/Team:</dt>
+      <dd><%= "#{(flex || player['position'])} - #{player['team']}" %></dd>
       <dt>
         Projected This Week:
       </dt>
@@ -41,10 +59,11 @@
       <dt>
         Previous Years:
       </dt>
-      <dd>
-        <% if player['yrs'] == "N/A" %>
+      <% if player['yrs'] == "N/A" %>
+        <dd class="pb-3">
           N/A
-        <% else %>
+      <% else %>
+        <dd>
           <% player['yrs'].each do |arr| %>
             <span><%= arr[0] %>:</span>
             <small><%= arr[1] %></small>

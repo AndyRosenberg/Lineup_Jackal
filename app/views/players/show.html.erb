@@ -10,12 +10,14 @@
     </figure>
     <aside class="mb-3 ml-1">
       <dl>
-        <dt>
-          Injuries:
-        </dt>
-        <dd>
-          <%= @player["injuries"] %>
-        </dd>
+        <% unless @player['position'] == 'DEF' %>
+          <dt>
+            Injuries:
+          </dt>
+          <dd>
+            <%= @player["injuries"] %>
+          </dd>
+        <% end %>
         <dt>
           Projected This Week:
         </dt>
@@ -63,13 +65,15 @@
           <% end %>
         </dd>
 
-        <dt>
-          More info:
-        </dt>
-        <dd>
-          <%= link_to "4for4", @player["links"]["for4"], target: "_blank", class: "plink bland-h1" %> | 
-          <%= link_to "FFNerd", @player["links"]["ffnerd"], target: "_blank", class: "plink bland-h1" %>
-        </dd>
+        <% unless @player['position'] == 'DEF' %>
+          <dt>
+            More info:
+          </dt>
+          <dd>
+            <%= link_to "4for4", @player["links"]["for4"], target: "_blank", class: "plink bland-h1" %> | 
+            <%= link_to "FFNerd", @player["links"]["ffnerd"], target: "_blank", class: "plink bland-h1" %>
+          </dd>
+        <% end %>
 
       </dl>
     </aside>

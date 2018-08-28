@@ -13,14 +13,16 @@ class PlayersController < ApplicationController
   end
 
   def search
+    @players = Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
+
     if params[:query].blank?
       @players = []
       flash[:error] = "No players matched your search."
     else
-      @players ||= Statistic.everything.first(500).select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
+      @players = @players.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
 
-      if !@players.blank?
-        @players = @players.sort {|a, b| b['projected'].to_i - a['projected'].to_i}
+      if @players.blank?
+        flash[:error] = "No players matched your search."
       end
     end
 

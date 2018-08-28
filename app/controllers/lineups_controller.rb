@@ -1,7 +1,8 @@
 class LineupsController < ApplicationController
-  before_action :require_user
-  before_action :find_lineup, only: [:show, :compare, :roster, :edit, :update, :destroy]
-  before_action :access_denied?, only: [:show, :compare, :roster, :edit, :update, :destroy]
+  before_action :require_user, except: [:matchup, :add_matchup]
+  before_action :load_draft, only: [:matchup, :compare, :new]
+  before_action :find_lineup, only: [:show, :compare, :roster, :edit, :update, :destroy, :add_comparison]
+  before_action :access_denied?, only: [:show, :compare, :roster, :edit, :update, :destroy, :add_comparison]
 
   def index
     @lineups = current_user.lineups
@@ -80,25 +81,25 @@ class LineupsController < ApplicationController
   end
 
   def compare
-    @starters = @lineup.starters.map  {|st| [st, st.projected, st.weekly] }
+    @type = @lineup.league_type
+    @starters = @lineup.select_players(Statistic.everything, 'starter').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
     @total = @lineup.starters.map { |st| st.weekly.to_i }.reduce(&:+)
   end
 
   def add_comparison
     params.permit!
+    type = "weekly_#{@lineup.league_type}"
     @list = ''
     @total2 = 0
     @players = params[:lineup][:players].select{|ply| ply[:full_name]}
     @players = @players.each do |plyr| 
-      player = Player.new(plyr.to_h)
-      player.lineup_id = params[:id]
-      player.position =  Statistic.find_player(player.ff_id)['position']
-      @list += "<div class='one-opp'><a class='del-comp' data-week=#{player.weekly}>&times;</a>"
-      @list += "<dt class='h6'>#{player.full_name}"
-      @list += "<span class='px-1'>&nbsp;</span>#{player.position} - #{player.team}</dt>"
-      @list += "<dd class='d-inline-block px-1'><b>#{player.weekly} points</b> (this week)</dd>"
-      @list += "<dd class='d-inline-block px-1'>#{player.projected} points (season)</dd><hr /></div>"
-      @total2 += player.weekly.to_i
+      player = Statistic.everything.find {|pl2| pl2['ff_id'] == plyr['ff_id']}
+      @list += "<div class='one-opp'><a class='del-comp' data-week=#{player[type]}>&times;</a>"
+      @list += "<dt class='h6'>#{player['full_name']}"
+      @list += "<span class='px-1'>&nbsp;</span>#{player['position']} - #{player['team']}</dt>"
+      @list += "<dd class='d-inline-block px-1'><b>#{player[type]} points</b></dd><br />"
+      @list += "<dd'>Injuries: #{player['injuries']}</dd><hr /></div>"
+      @total2 += player[type].to_i
     end
 
     @list = @list.html_safe
@@ -134,7 +135,36 @@ class LineupsController < ApplicationController
     end
   end
 
+  def matchup
+  end
+
+  def add_matchup
+    params.permit!
+    @team = params[:team]
+    @list = ''
+    @total_std, @total_ppr = 0, 0
+    @players = params[:lineup][:players].select{|ply| ply[:full_name]}
+    @players = @players.each do |plyr| 
+      player = Statistic.everything.find {|pl2| pl2['ff_id'] == plyr['ff_id']}
+      @list += "<dt class='h6'>#{player['full_name']}"
+      @list += "<span class='px-1'>&nbsp;</span>#{player['position']} - #{player['team']}</dt>"
+      @list += "<dd class='d-inline-block px-1'><b>#{player['weekly_standard']} points</b> (standard)</dd><br />"
+      @list += "<dd class='d-inline-block px-1'><b>#{player['weekly_ppr']} points</b> (ppr)</dd><br />"
+      @list += "<dd>Injuries: #{player['injuries']}</dd><hr /></div>"
+      @total_std += player['weekly_standard'].to_i
+      @total_ppr += player['weekly_ppr'].to_i
+    end
+
+    @list = @list.html_safe
+    @total_std = "<h4 class='text-center'>Standard: #{@total_std} points</h4>".html_safe
+    @total_ppr = "<h4 class='text-center'>PPR: #{@total_ppr} points</h4>".html_safe
+  end
+
   private
+  def load_draft
+    @draft = Statistic.draft
+  end
+
   def find_lineup
     if Lineup.exists?(id: params[:id])
       @lineup = Lineup.find(params[:id])

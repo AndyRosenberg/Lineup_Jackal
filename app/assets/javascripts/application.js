@@ -19,10 +19,6 @@
 $(document).on('turbolinks:load', function() {
   setTimeout(function() { $('.alert').fadeOut('slow') }, 2000);
 
-  $('#matchup').hover(function(e) {
-      $(this).text('Coming Soon!');
-  }, function(e2) { $(this).text('Matchup') });
-  
   $('#opponent').on('click', '.del-comp', function(e) {
     e.preventDefault();
     e.stopPropagation();

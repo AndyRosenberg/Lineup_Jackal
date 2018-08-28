@@ -11,10 +11,10 @@
         <%= link_to "Players", all_players_path, class: "nav-link" %>
       </li>
       <li class="nav-item">
-        <%= link_to "Lineups", lineups_path, class: "nav-link" %>
+        <%= link_to "Matchup", matchup_lineups_path, class: "nav-link" %>
       </li>
       <li class="nav-item">
-        <a class="nav-link" id="matchup" href="#">Matchup</a>
+        <%= link_to "Lineups", lineups_path, class: "nav-link" %>
       </li>
 
         <%= bootstrap_form_with url: search_players_path, bootstrap: {layout: "inline"}, method: "GET", data: {remote: false} do |f| %>

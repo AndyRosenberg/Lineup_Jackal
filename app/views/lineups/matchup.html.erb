@@ -1,0 +1,40 @@
+<main class="mt-1" id="comparison-main">
+  <div class="text-center p-3" id="comparison-board">
+    <h5 class="comparison">Week <%= CURRENT_WEEK %></h5>
+    <h1 class="comparison" id="comparison-title">Team 1 vs Team 2</h1>
+    <hr />
+    <div class="text-left" id="inner-board">
+      <dl class="d-inline-block col-md-5 p-2 comparison text-center" id="dl-home">
+        <div id="home-team">
+        </div>
+      </dl>
+      <dl class="d-inline-block col-md-5 p-2 comparison text-center" id= "dl-opp">
+        <div id="away-team">
+        </div>
+      </dl>
+    </div>
+  </div>
+</main>
+
+<%= form_tag add_matchup_lineups_path, remote: true, class: "mt-2 mb-2" do %>
+  <h2 class="text-center p-2 bland-h1">Pick Team:</h2>
+  <div class="text-center">
+    <span class="h5">Team 1</span>
+    <%= radio_button_tag "team", "home-team", selected: true %>
+    <span class="h5">Team 2</span>
+    <%= radio_button_tag "team", "away-team" %>
+  </div>
+  <br />
+
+  <h2 class="text-center p-2 bland-h1">Pick Players:</h2>
+  <div class="text-center mb-4">
+    <%= submit_tag "Matchup", class: "btn btn-default btn-idx" %>
+  </div>
+
+  <%= render 'set' %>
+
+  <div class="text-center">
+    <%= submit_tag "Matchup", class: "btn btn-default btn-idx" %>
+  </div>
+  <hr />
+<% end %>

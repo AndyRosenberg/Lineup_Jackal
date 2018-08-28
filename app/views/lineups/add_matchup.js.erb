@@ -1,0 +1,5 @@
+$( ":checked" ).trigger('click');
+$("#<%= escape_javascript(@team) %>").children().remove()
+$("<%= escape_javascript(@list) %>").appendTo("#<%= escape_javascript(@team) %>");
+$("<%= escape_javascript(@total_std) %>").appendTo("#<%= escape_javascript(@team) %>");
+$("<%= escape_javascript(@total_ppr) %>").appendTo("#<%= escape_javascript(@team) %>");

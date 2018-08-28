@@ -19,7 +19,7 @@
 
         <%= bootstrap_form_with url: search_players_path, bootstrap: {layout: "inline"}, method: "GET", data: {remote: false} do |f| %>
 
-          <%= f.search_field :query, class: "mr-sm-2", placeholder: "Search Players", bootstrap: {label: {hide: true}} %>
+          <%= f.search_field :query, class: "mr-sm-2", placeholder: "Search Players", value: @query, bootstrap: {label: {hide: true}} %>
 
           <%= f.submit "Search", class: "btn-primary mx-xs-2" %>
         <% end %>

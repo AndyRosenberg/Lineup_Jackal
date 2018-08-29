@@ -12,6 +12,20 @@ class Player < ActiveRecord::Base
     fake(hsh, 'full_name', 'position', 'ff_id')
   end
 
+  def schedule
+    my_sched = Statistic.schedules.select do |game|
+      game['game_week'] == CURRENT_WEEK.to_s &&
+      (game['home_team'] == self.team || game['away_team'] == self.team)
+    end
+
+    if my_sched.empty? 
+      'BYE' 
+    else
+      game = my_sched.first
+      game['home_team'] == self.team ? game['away_team'] : "@#{game['home_team']}"
+    end
+  end
+
   def last_5(no_type = nil)
     type = no_type || league_type
     Statistic.last_5.map do |k, v|

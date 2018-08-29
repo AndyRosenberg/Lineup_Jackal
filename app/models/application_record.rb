@@ -25,6 +25,10 @@ class ApplicationRecord < ActiveRecord::Base
     past_injuries = Statistic.find_or_create_by(name: "injuries")
     past_injuries.update(json: JSON.generate(current_injuries))
 
+    schedules = FFNerd.schedule.map(&:to_h)
+    past_schedules = Statistic.find_or_create_by(name: "schedules")
+    past_schedules.update(json: JSON.generate(schedules))
+
     past_weekly = Statistic.find_or_create_by(name: "weekly")
     past_weekly.update(json: JSON.generate(weekly), week: CURRENT_WEEK)
 

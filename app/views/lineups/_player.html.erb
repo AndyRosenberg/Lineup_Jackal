@@ -28,11 +28,8 @@
       <dt>Position/Team:</dt>
       <dd><%= "#{(flex || player['position'])} - #{player['team']}" %></dd>
       <dt>
-        Projected This Week:
+        Projected This Week (<%= player["schedule"] %>):
       </dt>
-      <dd>
-        <small>Playing <%= player["schedule"] %></small>
-      </dd>
       <dd>
         <%= player["weekly_#{type}"] %> points
       </dd>

@@ -79,7 +79,14 @@ figure {
 figcaption {
   clear: left !important;
   text-align: center;
+}
+
+.fig-idx {
   margin-left: -.8rem;
+}
+
+.img-idx {
+  margin-left: -.7rem;
 }
 
 #inner-board {
@@ -125,7 +132,6 @@ figure img {
 figure img.small {
   width: 200px;
   border-radius: 25%;
-  margin-left: -.7rem;
   padding-top: 1rem;
 }
 

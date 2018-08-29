@@ -150,8 +150,8 @@ class Player < ActiveRecord::Base
     img = Statistic.images.find {|img| img.include?(ff_id)}
     if img
       img[ff_id]
-    elsif full_name.split(' ').length > 2
-      Statistic.find_image(full_name.split(' ')[0..1].join(' ')) || john_doe
+    #elsif full_name.split(' ').length > 2
+      #Statistic.find_image(full_name.split(' ')[0..1].join(' ')) || john_doe
     else 
       john_doe
     end

@@ -1,6 +1,5 @@
 <div class="text-center">
-  <h1 class="p-3 bland-h1"><%= @player['full_name'] %></h1>
-  <h3 class="bland-h1"><%= "#{@player['position']} - #{@player['team']}" %></h3>
+  <h1 class="p-3 bland-h1"><%= @player['full_name'] %> (<%= "#{@player['position']} - #{@player['team']}" %>)</h1>
   <article class="d-block p-4 player-show w-75 mx-auto">
     <figure class="roster-figure">
       <img src=<%= @player['image'] %> />

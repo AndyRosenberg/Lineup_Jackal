@@ -96,7 +96,7 @@ class LineupsController < ApplicationController
       player = Statistic.everything.find {|pl2| pl2['ff_id'] == plyr['ff_id']}
       @list += "<div class='one-opp'><a class='del-comp' data-week=#{player[type]}>&times;</a>"
       @list += "<dt class='h6'>#{player['full_name']}"
-      @list += "<span class='px-1'>&nbsp;</span>#{player['position']} - #{player['team']} vs #{player['schedule']}</dt>"
+      @list += "<span class='px-1'>&nbsp;</span>#{player['position']} - #{player['team']} v. #{player['schedule']}</dt>"
       @list += "<dd class='d-inline-block px-1'><b>#{player[type]} points</b></dd><br />"
       @list += "<dd'>Injuries: #{player['injuries']}</dd><hr /></div>"
       @total2 += player[type].to_i
@@ -147,7 +147,7 @@ class LineupsController < ApplicationController
     @players = @players.each do |plyr| 
       player = Statistic.everything.find {|pl2| pl2['ff_id'] == plyr['ff_id']}
       @list += "<dt class='h6'>#{player['full_name']}"
-      @list += "<span class='px-1'>&nbsp;</span>#{player['position']} - #{player['team']} vs #{player['schedule']}</dt>"
+      @list += "<span class='px-1'>&nbsp;</span>#{player['position']} - #{player['team']} v. #{player['schedule']}</dt>"
       @list += "<dd class='d-inline-block px-1'><b>#{player['weekly_standard']} points</b> (standard)</dd><br />"
       @list += "<dd class='d-inline-block px-1'><b>#{player['weekly_ppr']} points</b> (ppr)</dd><br />"
       @list += "<dd>Injuries: #{player['injuries']}</dd><hr /></div>"

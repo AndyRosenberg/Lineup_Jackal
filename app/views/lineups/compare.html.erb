@@ -7,7 +7,7 @@
       <dl class="d-inline-block col-md-5 p-2 comparison text-center" id="dl-home">
         <div id="home-team">
           <% @starters.each do |plyr| %>
-            <dt class="h6"><%= plyr['full_name'] %><span class="px-1">&nbsp;</span><%= "#{plyr['position']} - #{plyr['team']} vs #{player['schedule']}" %></dt>
+            <dt class="h6"><%= plyr['full_name'] %><span class="px-1">&nbsp;</span><%= "#{plyr['position']} - #{plyr['team']} v. #{plyr['schedule']}" %></dt>
             <dd><b><%= plyr["weekly_#{@type}"] %> points</b></dd>
             <dd>Injuries: <%= plyr['injuries'] %></dd>
             <hr />

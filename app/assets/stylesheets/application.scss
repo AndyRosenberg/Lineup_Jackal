@@ -78,6 +78,8 @@ figure {
 
 figcaption {
   clear: left !important;
+  text-align: center;
+  margin-left: -.125rem;
 }
 
 #inner-board {
@@ -121,8 +123,9 @@ figure img {
 }
 
 figure img.small {
-  width: 200px;
-  height: 200px;
+  width: 212px;
+  height: 182px;
+  margin-left: -.25rem;
 }
 
 .head-show {

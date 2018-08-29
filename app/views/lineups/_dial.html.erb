@@ -4,7 +4,7 @@
       <%= link_to "&times;".html_safe, lineup_player_path(lineup, player), action: "destroy", method: "delete", remote: true, class: "btn btn-sm btn-danger ml-1 lineup-del" %>
     </h2>
     <figure class="edit-figure">
-      <img src=<%= @player_info.find {|pl| pl['ff_id'] == player.ff_id}['image'] %> />
+      <img src=<%= @player_info.find {|pl| pl['ff_id'] == player.ff_id}['image'] %> class="small" />
       <figcaption>
         <small><em>nfl.com</em></small>
       </figcaption>

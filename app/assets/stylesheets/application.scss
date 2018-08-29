@@ -120,6 +120,11 @@ figure img {
   border-radius: 12px;
 }
 
+figure img.small {
+  width: 200px;
+  height: 200px;
+}
+
 .head-show {
   background: rgba(31, 32, 255, .88);
   color: white;

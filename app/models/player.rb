@@ -12,17 +12,18 @@ class Player < ActiveRecord::Base
     fake(hsh, 'full_name', 'position', 'ff_id')
   end
 
-  def schedule
+  def schedule(pteam = nil)
+    pteam ||= self.team
     my_sched = Statistic.schedules.select do |game|
       game['game_week'] == CURRENT_WEEK.to_s &&
-      (game['home_team'] == self.team || game['away_team'] == self.team)
+      (game['home_team'] == pteam || game['away_team'] == pteam)
     end
 
     if my_sched.empty? 
       'BYE' 
     else
       game = my_sched.first
-      game['home_team'] == self.team ? game['away_team'] : "@#{game['home_team']}"
+      game['home_team'] == pteam ? game['away_team'] : "@#{game['home_team']}"
     end
   end
 
@@ -146,20 +147,7 @@ class Player < ActiveRecord::Base
   end
 
   def image
-    john_doe = "http://static.nfl.com/static/content/public/static/img/fantasy/transparent/200x200/BEV146616.png"
-    img = Statistic.images.find {|img| img.include?(ff_id)}
-    if img
-      img[ff_id]
-    #elsif full_name.split(' ').length > 2
-      #Statistic.find_image(full_name.split(' ')[0..1].join(' ')) || john_doe
-    else 
-      john_doe
-    end
-  end
-
-  def self.image(ffid)
-    img = Statistic.images.find {|img| img.include?(ffid)}
-    img ? img[ffid] : "https://www.bsn.eu/wp-content/uploads/2016/12/user-icon-image-placeholder-300-grey.jpg"
+    "https://www.fantasyfootballnerd.com/images/players_large/#{ff_id}.png"
   end
 
   def more_links

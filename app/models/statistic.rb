@@ -19,7 +19,7 @@ class Statistic < ActiveRecord::Base
     fakes.map do |fake|
       hsh = JSON.parse(fake.to_json)
       hsh["team"] = fake.team
-      hsh["schedule"] = fake.schedule
+      hsh["schedule"] = fake.schedule(hsh["team"])
       hsh["injuries"] = fake.injuries
       hsh["projected"] = fake.projected
       hsh["weekly_standard"] = fake.weekly('standard')

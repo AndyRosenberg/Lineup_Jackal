@@ -131,6 +131,7 @@ figure img {
 
 figure img.small {
   width: 200px;
+  max-height: 180px;
   border-radius: 25%;
   padding-top: 1rem;
 }
@@ -222,6 +223,7 @@ hr {
 .ply-main {
   width: 96%;
   margin: 0 auto;
+  padding-left: 2rem;
 }
 
 #home-logo {

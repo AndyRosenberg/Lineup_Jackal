@@ -135,7 +135,7 @@ class Statistic < ActiveRecord::Base
 
     stats = scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
 
-    names = ['rank', 'player', 'team', 'position', 'pass_yds', 'pass_tds', 'rush_yds', 'rush_tds', 'receptions', 'rec_yds', 'rec_tds', 'fgm', 'pts_against', 'tackle', 'total_points']
+    names = ['Rank', 'player', 'team', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
 
     stats.map do |stat|
       unless stat.blank?

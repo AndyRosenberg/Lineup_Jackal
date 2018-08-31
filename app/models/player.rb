@@ -37,9 +37,9 @@ class Player < ActiveRecord::Base
     last_5.flat_map do |yr|
       yr.map do |k, v| 
         if v
-          "#{k}: #{v.map {|k2, v2| "#{k2} - #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
+          "#{k} totals: | #{v.map {|k2, v2| "#{k2}: #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
         else
-          "#{k}: Not Applicable"
+          "#{k} totals: Not Applicable"
         end
       end
     end
@@ -61,7 +61,7 @@ class Player < ActiveRecord::Base
     weeks_this_year.flat_map do |yr|
       yr.map do |k, v| 
         if v
-          "#{k}: #{v.map {|k2, v2| "#{k2} - #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
+          "#{k}: | #{v.map {|k2, v2| "#{k2}: #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
         else
           "#{k}: Not Applicable"
         end

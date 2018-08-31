@@ -1,6 +1,6 @@
 <div class="text-center">
   <h1 class="p-3 bland-h1"><%= @player['full_name'] %> (<%= "#{@player['position']} - #{@player['team']}" %>)</h1>
-  <article class="d-block p-4 player-show w-75 mx-auto">
+  <article class="d-block pt-4 pl-4 pr-4 player-show w-75 mx-auto">
     <figure class="roster-figure">
       <img src=<%= @player['image'] %> />
       <figcaption>
@@ -33,36 +33,21 @@
         <dd>
           <%= @player['projected'] %> points
         </dd>
+        <hr />
 
-        <dt class="pt-2">
-          Past Stats (PPR):
-        </dt>
-        <dd>
-          <em>This Year:</em>
-          <br />
-          <% if @player['ppr_wks'] == "N/A" %>
-            <div>N/A</div>
-          <% else %>
-            <% @player['ppr_wks'].each do |arr| %>
-              <span class="text-left"><%= arr[0] %>:</span>
-              <small class="text-left"><%= arr[1] %></small>
-              <br />
-            <% end %>
-          <% end %>
-        </dd>
-        <dd>
-          <em>Past Seasons:</em>
-          <br />
-          <% if @player['ppr_yrs'] == "N/A" %>
-            <div>N/A</div>
-          <% else %>
-            <% @player['ppr_yrs'].each do |arr| %>
-              <span class="text-left"><%= arr[0] %>:</span>
-              <small class="text-left"><%= arr[1] %></small>
-              <br />
-            <% end %>
-          <% end %>
-        </dd>
+        <div class="container text-left w-75">
+          <dt class="text-left h4">
+            Season Stats*:
+          </dt>
+          <dd>
+              <p><b>This Year:</b></p>
+              <%= render 'stat', stat: @player['wty'] %>
+          </dd>
+          <dd>
+              <p><b>Past Seasons:</b></p>
+              <%= render 'stat', stat: @player['l5'] %>
+          </dd>
+        </div>
 
         <% unless @player['position'] == 'DEF' %>
           <dt>
@@ -78,5 +63,6 @@
     </aside>
     <br />
     <%= link_to "Back", :back, class: "btn btn-default btn-lg" %>
+    <p class="text-right"><small><em>*ESPN PPR scoring</em></small></p>
   </article>
 </div>

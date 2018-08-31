@@ -27,107 +27,46 @@ class Player < ActiveRecord::Base
     end
   end
 
-  def last_5(no_type = nil)
-    type = no_type || league_type
+  def last_5
     Statistic.last_5.map do |k, v|
-      if position == 'DEF'
-        test_name = full_name.split(' ')
-        test_name = [(test_name[-1] + ',')] + test_name[0..-2]
-        test_name = test_name.join(' ')
-
-        {  k => v.select { |plyr| plyr['player'].downcase == test_name.downcase }.first }
-      else
-        {k => v.select {|plyr| plyr['player'].downcase == full_name.split(' ').reverse.join(', ').downcase }.first}
-      end
-    end.select {|hsh| hsh.keys[0].include?(type)}
+      {k => v.find {|pl| pl['ff_id'] == ff_id} }
+    end
   end
 
-  def last_5_format(no_type = nil)
-    type = no_type || league_type
-    result = []
-    flattened = []
-    attempt = last_5(type)
-    if !attempt.first.values[0] && !attempt[1].values[0]
-      split = full_name.split(' ')
-      joined = split[0..1].join(' ')
-      short = self.clone
-      short.full_name = joined
-      short = short.last_5(type)
-      if short.first.values[0]
-        flattened = short.flat_map(&:to_a)
-      else
-        return "N/A"
+  def l5
+    last_5.flat_map do |yr|
+      yr.map do |k, v| 
+        if v
+          "#{k}: #{v.map {|k2, v2| "#{k2} - #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
+        else
+          "#{k}: Not Applicable"
+        end
       end
-    else
-      flattened = last_5(type).flat_map(&:to_a)
     end
-
-    flattened.each do |flat|
-      yr = flat[0].split('_')[0]
-      stats = flat[1] ? flat[1].map{|k, v| "#{k}: #{v}"}[4..-1].join(' | ') : "N/A"
-      result << "#{yr}~#{stats}".split('~')
-    end
-    result
   end
 
   def this_year_total
-    type = league_type
     Statistic.this_year.map do |k, v|
-      if position == 'DEF'
-        test_name = full_name.split(' ')
-        test_name = [(test_name[-1] + ',')] + test_name[0..-2]
-        test_name = test_name.join(' ')
-
-        {  k => v.select { |plyr| plyr['player'].downcase == test_name.downcase }.first }
-      else
-        {k => v.select {|plyr| plyr['player'].downcase == full_name.split(' ').reverse.join(', ').downcase }.first}
-      end
-    end.select {|hsh| hsh.keys[0].include?(type)}
+      {k => v.find {|pl| pl['ff_id'] == ff_id} }
+    end
   end
 
-  def weeks_this_year(no_type = nil)
-    type = no_type || league_type
-    Statistic.prev_weeks.map do |k, v|
-      if position == 'DEF'
-        test_name = full_name.split(' ')
-        test_name = [(test_name[-1] + ',')] + test_name[0..-2]
-        test_name = test_name.join(' ')
-
-        {  k => v.select { |plyr| plyr['player'].downcase == test_name.downcase }.first }
-      else
-        {k => v.select {|plyr| plyr['player'].downcase == full_name.split(' ').reverse.join(', ').downcase }.first}
-      end
-    end.select {|hsh| hsh.keys[0].include?(type)}
+  def weeks_this_year
+    Statistic.weeks_this_year.map do |k, v|
+      {k => v.find {|pl| pl['ff_id'] == ff_id} }
+    end
   end
 
-  def weeks_format(no_type = nil)
-    return "N/A" if CURRENT_WEEK == 1
-    type = no_type || league_type
-    result = []
-    flattened = []
-    attempt = weeks_this_year(type)
-
-    if !attempt.first.values[0]
-      split = full_name.split(' ')
-      joined = split[0..1].join(' ')
-      short = self.clone
-      short.full_name = joined
-      short = short.weeks_this_year(type)
-      if short.first.values[0]
-        flattened = short.flat_map(&:to_a)
-      else
-        return "N/A"
+  def wty
+    weeks_this_year.flat_map do |yr|
+      yr.map do |k, v| 
+        if v
+          "#{k}: #{v.map {|k2, v2| "#{k2} - #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
+        else
+          "#{k}: Not Applicable"
+        end
       end
-    else
-      flattened = weeks_this_year(type).flat_map(&:to_a)
     end
-
-    flattened.each do |flat|
-      yr = flat[0].split('_')[0]
-      stats = flat[1] ? flat[1].map{|k, v| "#{k}: #{v}"}[4..-1].join(' | ') : "N/A"
-      result << "Week #{yr[0]}~#{stats}".split('~')
-    end
-    result
   end
 
   def projected

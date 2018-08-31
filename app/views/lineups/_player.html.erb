@@ -23,7 +23,7 @@
       <% end %>
     </figcaption>
   </figure>
-  <aside class="mb-3 ml-4">
+  <aside class="mb-3 ml-4 w-75">
     <dl>
       <dt>Position/Team:</dt>
       <dd><%= "#{(flex || player['position'])} - #{player['team']}" %></dd>
@@ -45,31 +45,14 @@
         Weekly Stats:
       </dt>
       <dd>
-        <% if player['wks'] == "N/A" %>
-          N/A
-        <% else %>
-          <% player['wks'].each do |arr| %>
-            <span><%= arr[0] %>:</span>
-            <small><%= arr[1] %></small>
-            <br />
-          <% end %>
-        <% end %>
+        <%= render 'players/stat', stat: player['wty'] %>
       </dd>
 
       <dt>
         Previous Years:
       </dt>
-      <% if player['yrs'] == "N/A" %>
-        <dd class="pb-3">
-          N/A
-      <% else %>
-        <dd>
-          <% player['yrs'].each do |arr| %>
-            <span><%= arr[0] %>:</span>
-            <small><%= arr[1] %></small>
-            <br />
-          <% end %>
-        <% end %>
+      <dd>
+        <%= render 'players/stat', stat: player['l5'] %>
       </dd>
 
     </dl>

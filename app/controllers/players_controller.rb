@@ -59,9 +59,6 @@ class PlayersController < ApplicationController
   def show
     @player = Statistic.everything.find { |pl| pl['ff_id'] == params[:id] }
     redirect_to home_path unless @player
-    ppr = Statistic.ppr.find { |pl| pl['ff_id'] == params[:id] }
-    @player['ppr_yrs'] = ppr['yrs']
-    @player['ppr_wks'] = ppr['wks']
   end
 
   def destroy

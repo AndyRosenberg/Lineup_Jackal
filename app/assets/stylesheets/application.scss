@@ -121,6 +121,10 @@ article.player-idx, article.player-show {
   background: #FFF0B0;
 }
 
+article.player-show {
+  padding-bottom: 0 !important;
+}
+
 article.idx-fixed {
   width: 25rem;
 }

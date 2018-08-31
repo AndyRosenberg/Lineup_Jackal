@@ -41,16 +41,10 @@ class LineupsController < ApplicationController
     @type = @lineup.league_type
 
     @starters = @lineup.select_players(Statistic.everything, 'starter').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
-    starters_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'starter')
-    merge!(@starters, starters_stats)
 
     @bench = @lineup.select_players(Statistic.everything, 'bench').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
-    bench_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'bench')
-    merge!(@bench, bench_stats)
 
     @flex = @lineup.select_players(Statistic.everything, 'flex')
-    flex_stats = @lineup.select_players(Statistic.send(@type.to_sym), 'flex')
-    merge!(@flex, flex_stats)
   end
 
   def edit
@@ -171,16 +165,6 @@ class LineupsController < ApplicationController
     else
       flash[:error] = "Lineup doesn't exist."
       redirect_to home_path 
-    end
-  end
-
-  def merge!(lineup1, lineup2)
-    lineup1.each do |l1|
-      match = lineup2.find {|l2| l1['ff_id'] == l2['ff_id'] }
-      if match
-        l1['yrs'] = match['yrs']
-        l1['wks'] = match['wks']
-      end
     end
   end
 

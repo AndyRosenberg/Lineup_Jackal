@@ -7,51 +7,6 @@ class Statistic < ActiveRecord::Base
     access('players')
   end
 
-  def self.active_players(pos = nil)
-    pos ? players.select { |pl| pl["position"] == pos && pl["active"] == "1" } : players.select { |pl| pl["active"] == "1" }
-  end
-
-  def self.fakes(pos = nil)
-    active_players(pos).map { |pl| Player.fake(pl) }
-  end
-
-  def self.create_everything
-    fakes.map do |fake|
-      hsh = JSON.parse(fake.to_json)
-      hsh["team"] = fake.team
-      hsh["schedule"] = fake.schedule(hsh["team"])
-      hsh["injuries"] = fake.injuries
-      hsh["projected"] = fake.projected
-      hsh["weekly_standard"] = fake.weekly('standard')
-      hsh["weekly_ppr"] = fake.weekly('ppr')
-      hsh["image"] = fake.image
-      hsh["links"] = fake.more_links
-      hsh
-    end
-  end
-
-  def self.everything_scored
-    scored = everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.select {|pl| pl['projected'].to_i > 0 }
-    scored = scored.map { |pl| Player.fake_show(pl) }
-  end
-
-  def self.create_stats(type)
-    everything_scored.map do |fake|
-      hsh = JSON.parse(fake.to_json)
-      hsh["wks"] = fake.weeks_format(type)
-      hsh["yrs"] = fake.last_5_format(type)
-      hsh
-    end
-  end
-
-  def self.update_weeks(type)
-    self.send(type.to_sym).map do |pl|
-      fake = Player.fake_show(pl)
-      pl["wks"] = fake.weeks_format(type)
-      pl
-    end
-  end
-
   def self.standard
     access("standard")
   end
@@ -92,15 +47,36 @@ class Statistic < ActiveRecord::Base
     access('players').select { |plyr| plyr["player_id"] == ffid }.first
   end
 
-  def self.find_by_name(name, team = nil)
-    result = []
-    if team
-      result = players.select {|plyr| plyr['display_name'].downcase == name.downcase && plyr['team'].downcase == team.downcase }
-    else
-      result = players.select {|plyr| plyr['display_name'].downcase == name.downcase }
+  def self.active_players(pos = nil)
+    pos ? players.select { |pl| pl["position"] == pos && pl["active"] == "1" } : players.select { |pl| pl["active"] == "1" }
+  end
+
+  def self.fakes(pos = nil)
+    active_players(pos).map { |pl| Player.fake(pl) }
+  end
+
+  def self.create_everything
+    fakes.map do |fake|
+      hsh = JSON.parse(fake.to_json)
+      hsh["team"] = fake.team
+      hsh["schedule"] = fake.schedule(hsh["team"])
+      hsh["injuries"] = fake.injuries
+      hsh["projected"] = fake.projected
+      hsh["weekly_standard"] = fake.weekly('standard')
+      hsh["weekly_ppr"] = fake.weekly('ppr')
+      hsh["l5"] = fake.l5
+      hsh["wty"] = fake.wty
+      hsh["image"] = fake.image
+      hsh["links"] = fake.more_links
+      hsh
     end
-    return result if result.empty? || result.size > 1
-    result.first
+  end
+
+  def self.find_by_name(name)
+    result = players.find {|plyr| plyr['display_name'].downcase.gsub(/[,.']/, '').include?(name.downcase.gsub(/[,.']/, '')) }
+
+    return result['player_id'] if result
+    nil
   end
 
   def self.projected_annual(ffid)
@@ -140,31 +116,10 @@ class Statistic < ActiveRecord::Base
     current_week.times do |n|
       num = n + 1
       wk = Statistic.this_year(num)
-      wk.each {|k, v| final["#{num}_#{k}"] = v }
+      wk.each {|k, v| final["Week #{num}"] = v }
     end
 
     final
-  end
-
-  def self.find_image(player_name)
-    image_link = nil
-    split_name = player_name.split(' ')
-    joined = player_name.split(' ').join('').downcase
-
-    nfl_search = HTTParty.get("http://www.nfl.com/players/search?category=name&filter=#{split_name[0]}+#{split_name[1]}&playerType=current")
-
-    nfl_search = Nokogiri::HTML(nfl_search).at('#result')
-    return nil if !nfl_search
-
-    linked_profile = nfl_search.search('td a').find {|link| link.attr('href').include?(joined) }
-    return nil if !linked_profile
-
-    linked_profile = linked_profile.attr('href')
-
-    nfl_player = HTTParty.get("http://www.nfl.com/#{linked_profile}")
-    nfl_player = Nokogiri::HTML(nfl_player)
-
-    image_link = nfl_player.at('#player-bio').search('img').first.attr('src')
   end
 
   private
@@ -180,23 +135,31 @@ class Statistic < ActiveRecord::Base
 
     stats = scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
 
-    names = ['rank', 'player', 'team', 'position', 'pass_yds', 'pass_tds', 'rush_yds', 'rush_tds', 'receptions', 'rec_yds', 'rec_tds', 'fgm', 'pts_against', 'tackle', 'pts_total']
+    names = ['rank', 'player', 'team', 'position', 'pass_yds', 'pass_tds', 'rush_yds', 'rush_tds', 'receptions', 'rec_yds', 'rec_tds', 'fgm', 'pts_against', 'tackle', 'total_points']
 
     stats.map do |stat|
       unless stat.blank?
         result = {}
         stat.each_with_index do |st, idx|
-          result[names[idx]] = st
+          if idx == 1
+            st = st.gsub(/[,.']/, '').split(' ')
+            st = st[1..-1].concat(st[0..0])
+            st = st.first.downcase.match(/(jr|sr|iii)/) ? st[1..-1].join(' ') : st.join(' ')
+          end
+          result[names[idx]] = st if st != "0"
         end
+
+        ffid = find_by_name(result['player'])
+        result['ff_id'] = ffid if ffid
       end
+
       result
     end.compact
   end
 
   def self.fantasy_sharks(result, yr_code, year)
     url = "https://www.fantasysharks.com/apps/bert/stats/points.php?League=-1&Position=99&scoring=10&Segment=#{yr_code}"
-    result["#{year}_standard"] = gen_prev(url) 
-    result["#{year}_ppr"] = gen_prev(url)
+    result["#{year}"] = gen_prev(url)
   end
 
   def self.determine_year_code(current, tense)

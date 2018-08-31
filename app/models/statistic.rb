@@ -146,7 +146,7 @@ class Statistic < ActiveRecord::Base
             st = st[1..-1].concat(st[0..0])
             st = st.first.downcase.match(/(jr|sr|iii)/) ? st[1..-1].join(' ') : st.join(' ')
           end
-          result[names[idx]] = st if st != "0"
+          result[names[idx]] = st if (st != "0" || idx == stat.size - 1)
         end
 
         ffid = find_by_name(result['player'])

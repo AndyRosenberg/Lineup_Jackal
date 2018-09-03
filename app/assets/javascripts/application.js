@@ -35,4 +35,31 @@ $(document).on('turbolinks:load', function() {
     $('#opp-total').data('total', now);
   });
 
+  var result = ''
+
+  $('#searchbar').on("keyup", function(e) {
+    result = $(this).val().toLowerCase();
+
+    var notIncluded = $(':checkbox').filter(function() {
+          return !$(this).val().toLowerCase().includes(result);
+        });
+
+    var included = $(':checkbox').filter(function() {
+          return $(this).val().toLowerCase().includes(result);
+        });
+
+    if (notIncluded.length) {
+      notIncluded.parents("span").hide();
+      included.parents("span").show();
+    } else {
+      $('span').show();
+    }
+  });
+
+  $(':checkbox').change(function() {
+    result = '';
+    $('#searchbar').val('');
+    $('*').show();
+  });
+
 });

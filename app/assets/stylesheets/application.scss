@@ -164,6 +164,13 @@ figure img.small {
   vertical-align: top;
 }
 
+#searchbar {
+  margin-left: 12%;
+  border-radius: 2%;
+  outline: none;
+  text-indent: .5rem;
+}
+
 .plyr-del:hover, .plyr-del:active, .lineup-del:hover, .lineup-del:active {
   opacity: .98;
 }

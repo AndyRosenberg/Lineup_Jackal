@@ -4,7 +4,7 @@
   <% if logged_in? %>
     <% @players.each do |player| %>
       <article class="d-inline-block pt-2 player-idx idx-fixed" id='<%= "#{player['ff_id']}" %>'>
-        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1", target: "_blank" %></h4>
         <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
         <figure "d-inline-block">
           <img src=<%= player['image'] %> class="small img-idx" />
@@ -51,7 +51,7 @@
   <% else %>
     <% @players.each do |player| %>
       <article class="d-inline-block pt-2 player-idx idx-fixed" id='<%= "#{player['ff_id']}" %>'>
-        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1" %></h4>
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1", target: "_blank" %></h4>
         <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
         <figure "d-inline-block">
           <img src=<%= player['image'] %> class="small img-idx" />

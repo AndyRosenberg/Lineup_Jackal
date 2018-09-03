@@ -49,17 +49,17 @@ $(document).on('turbolinks:load', function() {
         });
 
     if (notIncluded.length) {
-      notIncluded.parents("span").hide();
-      included.parents("span").show();
+      notIncluded.parents('.playcheck').hide();
+      included.parents('.playcheck').show();
     } else {
-      $('span').show();
+      $('.playcheck').show();
     }
   });
 
   $(':checkbox').change(function() {
     result = '';
     $('#searchbar').val('');
-    $('*').show();
+    $('.playcheck').show();
   });
 
 });

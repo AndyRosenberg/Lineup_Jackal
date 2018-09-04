@@ -11,13 +11,16 @@
 
   <body>
     <%= render 'layouts/navigation' %>
-    <% if flash[:notice] %>
-      <div class="alert alert-success" id="flash-notice"><%= flash[:notice] %></div>
-      <% flash.delete(:notice) %>
-    <% elsif flash[:error] %>
-      <div class="alert alert-warning" id="flash-warning"><%= flash[:error] %></div>
-      <% flash.delete(:error) %>
-    <% end %>
-    <%= yield %>
+    <div id="body">
+      <% if flash[:notice] %>
+        <div class="alert alert-success" id="flash-notice"><%= flash[:notice] %></div>
+        <% flash.delete(:notice) %>
+      <% elsif flash[:error] %>
+        <div class="alert alert-warning" id="flash-warning"><%= flash[:error] %></div>
+        <% flash.delete(:error) %>
+      <% end %>
+      <%= yield %>
+    </div>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

@@ -117,7 +117,7 @@ class LineupsController < ApplicationController
       ActiveRecord::Base.transaction do
         roster[:statuses].each do |k, v|
           player = Player.find(v[:id])
-          player.status = v[:stat]
+          player.status = v[:stat] || "bench"
           player.save!
         end
         flash[:notice] = "Success"

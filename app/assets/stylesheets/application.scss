@@ -70,6 +70,10 @@ aside {
   display: inline-block;
 }
 
+aside.flexed {
+  font-size: smaller;
+}
+
 figure {
   display: inline-block !important;
   float: left;

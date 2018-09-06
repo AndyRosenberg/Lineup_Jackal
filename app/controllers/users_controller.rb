@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   before_action :require_user, only: [:edit, :update]
   before_action :access_denied?, only: [:edit, :update]
+  before_action :set_user, only: [:edit, :update]
 
   def create
     @user = User.new(user_params)
@@ -10,7 +11,7 @@ class UsersController < ApplicationController
       flash[:notice] = "You are registered. Set your first lineup!"
       redirect_to new_lineup_path
     else
-      flash[:error] = "Registration failed. Please try again."
+      flash[:error] = @user.errors.full_messages.join(" | ")
       redirect_to new_user_path
     end
   end
@@ -22,11 +23,9 @@ class UsersController < ApplicationController
   def show; end
 
   def edit
-    @user = User.find(params[:id])
   end
 
-  def update 
-    @user = User.find(params[:id])
+  def update
     if @user.update(user_params)
       flash[:notice] = "Updated!"
     else
@@ -90,12 +89,20 @@ class UsersController < ApplicationController
   end
 
   private
+  def find_user
+    User.find_by(slug: params[:id])
+  end
+
+  def set_user
+    @user = find_user
+  end
+
   def user_params
     params.require(:user).permit(:email, :username, :password)
   end
 
   def access_denied?
-    unless params[:id].to_i == current_user.id
+    unless find_user == current_user
       flash[:error] = "Access Denied"
       redirect_to home_path 
     end

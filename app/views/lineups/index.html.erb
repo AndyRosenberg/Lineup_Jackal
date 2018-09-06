@@ -5,9 +5,9 @@
   <div class="text-left">
     <% @lineups.each do |lineup| %>
       <dl class="d-inline-block pt-1 dl-lineup-idx">
-        <article class="player-idx">
+        <article class="player-idx line-idx">
           <%= link_to "&times;".html_safe, lineup_path(lineup), method: "delete", remote: true, class: "btn btn-sm btn-danger lineup-del" %>
-          <dt class="h4 blink text-center mx-2"><%= link_to lineup.name, lineup_path(lineup) %></dt>
+          <dt class="h4 blink text-center mx-2"><%= link_to "#{lineup.name} (#{lineup.season})", lineup_path(lineup) %></dt>
           <dd class="mx-2 px-4">
             <%= link_to "Add", lineup_players_path(lineup), class: "btn btn-default btn-idx" %>
             <%= link_to "Edit", edit_lineup_path(lineup), class: "btn btn-default btn-idx" %>

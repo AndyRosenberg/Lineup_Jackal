@@ -1,6 +1,6 @@
 class PlayersController < ApplicationController
   before_action :require_user, except: [:show, :flex_index, :search]
-  before_action :find_lineup, except: [:show, :flex_index, :search]
+  before_action :find_lineup, except: [:show, :flex_index, :flex_create, :search]
 
   def index
     everything ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
@@ -34,7 +34,7 @@ class PlayersController < ApplicationController
     params.require(:player).permit!
     player = Player.fake_show(params[:player])
     player.status = "bench"
-    player.lineup_id = params[:lineup_id]
+    player.lineup = @lineup
     @button = "#button-#{player.ff_id}".html_safe
     render "added" if player.save
   end
@@ -70,6 +70,6 @@ class PlayersController < ApplicationController
 
   private
   def find_lineup
-    @lineup = Lineup.find(params[:lineup_id])
+    @lineup = Lineup.find_by(token: params[:lineup_id])
   end
 end

@@ -3,6 +3,7 @@ class LineupsController < ApplicationController
   before_action :load_draft, only: [:matchup, :compare, :new]
   before_action :find_lineup, only: [:show, :compare, :roster, :edit, :update, :destroy, :add_comparison]
   before_action :access_denied?, only: [:show, :compare, :roster, :edit, :update, :destroy, :add_comparison]
+  before_action :outdated?, only: [:show, :compare, :roster, :edit, :update, :destroy, :add_comparison]
 
   def index
     @lineups = current_user.lineups
@@ -15,7 +16,7 @@ class LineupsController < ApplicationController
 
     begin
       ActiveRecord::Base.transaction do
-        league = Lineup.new({name: pre[:name], league_type: pre[:league_type], user_id: current_user.id})
+        league = Lineup.new({name: pre[:name], league_type: (pre[:league_type] || "standard"), user_id: current_user.id})
         league.save!
 
         pre[:players].each do |item|
@@ -160,8 +161,8 @@ class LineupsController < ApplicationController
   end
 
   def find_lineup
-    if Lineup.exists?(id: params[:id])
-      @lineup = Lineup.find(params[:id])
+    if Lineup.exists?(token: params[:id])
+      @lineup = Lineup.find_by(token: params[:id])
     else
       flash[:error] = "Lineup doesn't exist."
       redirect_to home_path 
@@ -169,9 +170,16 @@ class LineupsController < ApplicationController
   end
 
   def access_denied?
-    unless Lineup.find(params[:id]).user == current_user
+    unless Lineup.find_by(token: params[:id]).user == current_user
       flash[:error] = "Access Denied"
       redirect_to home_path 
+    end
+  end
+
+  def outdated?
+    unless Lineup.find_by(token: params[:id]).up_to_date?
+      flash[:error] = "Cannot access old lineups."
+      redirect_to lineups_path
     end
   end
 end

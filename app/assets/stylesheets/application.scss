@@ -220,6 +220,7 @@ hr {
   margin-left: -.1rem;
   vertical-align: middle;
   border: .5px solid rgba(142, 189, 240, .2);
+  max-width: 6rem;
 }
 
 .flex-dl  {
@@ -286,4 +287,9 @@ footer {
 
 .footer-copyright {
   font-size: larger;
+}
+
+.line-idx {
+  max-width: 18rem;
+  overflow-wrap: break-word;
 }

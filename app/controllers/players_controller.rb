@@ -3,13 +3,13 @@ class PlayersController < ApplicationController
   before_action :find_lineup, except: [:show, :flex_index, :flex_create, :search]
 
   def index
-    everything ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
+    everything ||= Statistic.everything.first(500)
     @all_players ||= @lineup.filter_players(everything)
     @type = @lineup.league_type
   end
 
   def flex_index
-    @players ||= Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(300)
+    @players ||= Statistic.everything.first(300)
   end
 
   def search
@@ -19,7 +19,7 @@ class PlayersController < ApplicationController
       @players = []
       flash[:error] = "No players matched your search."
     else
-      @players = Statistic.everything.sort {|a, b| b['projected'].to_i - a['projected'].to_i}.first(500)
+      @players = Statistic.everything.first(500)
       @players = @players.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
 
       if @players.blank?

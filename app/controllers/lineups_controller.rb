@@ -40,12 +40,13 @@ class LineupsController < ApplicationController
 
   def show
     @type = @lineup.league_type
+    everything = Statistic.everything("weekly_#{@type}")
 
-    @starters = @lineup.select_players(Statistic.everything, 'starter').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
+    @starters = @lineup.select_players(everything, 'starter')
 
-    @bench = @lineup.select_players(Statistic.everything, 'bench').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
+    @bench = @lineup.select_players(everything, 'bench')
 
-    @flex = @lineup.select_players(Statistic.everything, 'flex')
+    @flex = @lineup.select_players(everything, 'flex')
   end
 
   def edit
@@ -77,7 +78,7 @@ class LineupsController < ApplicationController
 
   def compare
     @type = @lineup.league_type
-    @starters = @lineup.select_players(Statistic.everything, 'starter').sort_by {|pl| pl["weekly_#{@type}"].to_f }.reverse
+    @starters = @lineup.select_players(Statistic.everything("weekly_#{@type}"), 'starter')
     @total = @lineup.starters.map { |st| st.weekly.to_i }.reduce(&:+)
   end
 

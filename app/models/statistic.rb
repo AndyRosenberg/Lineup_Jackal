@@ -15,10 +15,6 @@ class Statistic < ActiveRecord::Base
     access("ppr")
   end
 
-  def self.everything
-    access('everything')
-  end
-
   def self.draft
     access('draft')
   end
@@ -43,16 +39,9 @@ class Statistic < ActiveRecord::Base
     access("last_5")
   end
 
-  def self.find_player(ffid)
-    access('players').select { |plyr| plyr["player_id"] == ffid }.first
-  end
-
-  def self.active_players(pos = nil)
-    pos ? players.select { |pl| pl["position"] == pos && pl["active"] == "1" } : players.select { |pl| pl["active"] == "1" }
-  end
-
-  def self.fakes(pos = nil)
-    active_players(pos).map { |pl| Player.fake(pl) }
+  def self.everything(filter = nil)
+    filter ||= 'projected'
+    access('everything').sort_by {|pl| pl[filter].to_f }.reverse
   end
 
   def self.create_everything
@@ -72,11 +61,27 @@ class Statistic < ActiveRecord::Base
     end
   end
 
+  def self.find_position(pos)
+    everything.select { |plyr| plyr["position"] == pos }
+  end
+
+  def self.find_player(ffid)
+    access('players').select { |plyr| plyr["player_id"] == ffid }.first
+  end
+
   def self.find_by_name(name)
     result = players.find {|plyr| plyr['display_name'].downcase.gsub(/[,.']/, '').include?(name.downcase.gsub(/[,.']/, '')) }
 
     return result['player_id'] if result
     nil
+  end
+
+  def self.active_players(pos = nil)
+    pos ? players.select { |pl| pl["position"] == pos && pl["active"] == "1" } : players.select { |pl| pl["active"] == "1" }
+  end
+
+  def self.fakes(pos = nil)
+    active_players(pos).map { |pl| Player.fake(pl) }
   end
 
   def self.projected_annual(ffid)

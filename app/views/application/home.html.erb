@@ -1,6 +1,10 @@
 <div class="jumbotron mt-1">
   <h1>Own your leage all week, every week.</h1>
-  <p>The jackal interfaces with real-time fantasy football data. Create lineups from your team, compare potential outcomes with different starters, free agents, or matchups with opponents.</p>
+  <p class="lead">
+    The jackal interfaces daily with aggregated fantasy football data. 
+    Create lineups from your current teams, all without the constraints of a league. 
+    Then, compare potential outcomes against different starters, free agents, or full teams.
+  </p>
   <p>
     <% if logged_in? %>
         <%= link_to "Create Lineup", new_lineup_path, class: "btn btn-primary btn-lg" %>

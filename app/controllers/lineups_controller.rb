@@ -79,7 +79,7 @@ class LineupsController < ApplicationController
   def compare
     @type = @lineup.league_type
     @starters = @lineup.select_players(Statistic.everything("weekly_#{@type}"), 'starter')
-    @total = @lineup.starters.map { |st| st.weekly.to_i }.reduce(&:+)
+    @total = @lineup.starters.map { |st| st.weekly.to_i }.reduce(&:+) || 0
   end
 
   def add_comparison

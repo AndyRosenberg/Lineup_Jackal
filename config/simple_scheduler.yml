@@ -1,4 +1,4 @@
-weekly_task:
-  class: "WeeklyStatsJob"
+daily_task:
+  class: "DailyStatsJob"
   every: "1.day"
   at: "2:00"

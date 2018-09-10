@@ -16,8 +16,8 @@ require 'database_cleaner'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   keep_tables = %w[statistics]
-  config.before(:suite) do
-    DatabaseCleaner.strategy = :transaction, {except: keep_tables}
+  config.before(:all) do
+    DatabaseCleaner.strategy = :truncation, {except: keep_tables}
     DatabaseCleaner.clean_with(:truncation, {except: keep_tables})
   end
 

@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'spec_helper'
 
 def add_user
   let(:andy) { Fabricate(:user) }

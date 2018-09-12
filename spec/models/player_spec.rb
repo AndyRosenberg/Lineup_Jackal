@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'spec_helper'
 
 describe Player do
   let(:luck) { Player.fake(Statistic.find_player('1932')) }

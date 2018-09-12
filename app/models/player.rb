@@ -33,18 +33,6 @@ class Player < ActiveRecord::Base
     end
   end
 
-  def l5
-    last_5.flat_map do |yr|
-      yr.map do |k, v| 
-        if v
-          "Season #{k}: | #{v.map {|k2, v2| "#{k2}: #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
-        else
-          "Season #{k}: Not Applicable"
-        end
-      end
-    end
-  end
-
   def this_year_total
     Statistic.this_year.map do |k, v|
       {k => v.find {|pl| pl['ff_id'] == ff_id} }
@@ -57,11 +45,23 @@ class Player < ActiveRecord::Base
     end
   end
 
+  def l5
+    last_5.flat_map do |yr|
+      yr.map do |k, v| 
+        if v
+          "Season #{k}: | #{ format_stat(v) }"
+        else
+          "Season #{k}: Not Applicable"
+        end
+      end
+    end
+  end
+
   def wty
     weeks_this_year.flat_map do |yr|
       yr.map do |k, v| 
         if v
-          "#{k}: | #{v.map {|k2, v2| "#{k2}: #{v2}" unless k2.match(/(ff|play|pos|tea)/)}.compact.join(" | ")}"
+          "#{k}: | #{ format_stat(v) }"
         else
           "#{k}: Not Applicable"
         end
@@ -101,6 +101,11 @@ class Player < ActiveRecord::Base
   def injuries
     inj = Statistic.injuries.find { |pl| pl['player_id'] == ff_id }
     inj ? "#{inj['game_status'].split(' ').first} - #{inj['injury']}" : "None"
+  end
+
+  private
+  def format_stat(arr)
+    arr.map { |k2, v2| "#{k2}: #{v2.gsub('*', '')}" unless k2.match(/(ff|play|pos|tea)/) }.compact.join(" | ")
   end
 
 end

@@ -140,7 +140,8 @@ class Statistic < ActiveRecord::Base
 
     stats = scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
 
-    names = ['Rank', 'player', 'team', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
+    names1 = ['Rank', 'player', 'team', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
+    names2 = ['Rank', 'player', 'team', 'Opp', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
 
     stats.map do |stat|
       unless stat.blank?
@@ -151,7 +152,12 @@ class Statistic < ActiveRecord::Base
             st = st[1..-1].concat(st[0..0])
             st = st.first.downcase.match(/(jr|sr|iii)/) ? st[1..-1].join(' ') : st.join(' ')
           end
-          result[names[idx]] = st if (st != "0" || idx == stat.size - 1)
+
+          if stat.size == 16
+            result[names2[idx]] = st if (st != "0" || idx == stat.size - 1)
+          else
+            result[names1[idx]] = st if (st != "0" || idx == stat.size - 1)
+          end
         end
 
         ffid = find_by_name(result['player'])

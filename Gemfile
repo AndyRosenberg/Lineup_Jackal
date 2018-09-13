@@ -16,14 +16,13 @@ gem 'uglifier', '>= 1.3.0'
 
 
 gem 'fantasy_football_nerd'
-gem 'rest-client'
 gem 'pg'
 gem "comfy_bootstrap_form", "~> 4.0.0"
 gem 'bootstrap'
 gem 'jquery-rails'
 gem 'nokogiri'
-gem 'httparty'
 gem "simple_scheduler"
+gem "geocoder"
 
 
 # Use CoffeeScript for .coffee assets and views

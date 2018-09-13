@@ -16,6 +16,12 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'lineupjackal.com' }
 
+  Geocoder.configure(
+  ...
+  :http_proxy => ENV['QUOTAGUARD_URL'],
+  :timeout => 5
+  )
+
   # Code is not reloaded between requests.
   config.cache_classes = true
 

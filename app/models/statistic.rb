@@ -134,15 +134,25 @@ class Statistic < ActiveRecord::Base
   end
 
   def self.gen_prev(url)
-    scrape = start_scrape(url)
-
-    stats = scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
+    stats = Rails.env.production? ? prod_scrape(url) : dev_scrape(url)
 
     format_scrape(stats).compact
   end
 
-  def self.start_scrape(url)
-    Nokogiri::HTML(open(url))
+  def self.dev_scrape(url)
+    scrape = Nokogiri::HTML(open(url))
+    scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
+  end
+
+  def self.prod_scrape(url)
+    scrape = Scrapetastic::APIController.new
+    results = scrape.lookup(url, '#toolData tr', '', '')
+    results.values.map do |res|
+      res.gsub!(', ', '~~')
+      res = res.split(' ')
+      res[1].gsub!('~~', ', ')
+      res
+    end
   end
 
   def self.fantasy_sharks(result, yr_code, year)

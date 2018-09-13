@@ -22,7 +22,6 @@ gem 'bootstrap'
 gem 'jquery-rails'
 gem 'nokogiri'
 gem "simple_scheduler"
-gem "geocoder"
 gem 'scrapetastic', git: 'https://github.com/mbuckbee/Scrapetastic-Gem.git'
 
 

@@ -140,10 +140,9 @@ class Statistic < ActiveRecord::Base
 
     format_scrape(stats).compact
   end
-  
+
   def self.start_scrape(url)
-    scrape = HTTParty.get(url)
-    Nokogiri::HTML(scrape)
+    Nokogiri::HTML(open(url))
   end
 
   def self.fantasy_sharks(result, yr_code, year)

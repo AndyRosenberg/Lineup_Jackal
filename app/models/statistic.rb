@@ -134,13 +134,16 @@ class Statistic < ActiveRecord::Base
   end
 
   def self.gen_prev(url)
-    scrape = HTTParty.get(url)
-
-    scrape = Nokogiri::HTML(scrape)
+    scrape = start_scrape(url)
 
     stats = scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
 
     format_scrape(stats).compact
+  end
+  
+  def self.start_scrape(url)
+    scrape = HTTParty.get(url)
+    Nokogiri::HTML(scrape)
   end
 
   def self.fantasy_sharks(result, yr_code, year)

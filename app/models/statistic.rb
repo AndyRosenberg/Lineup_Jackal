@@ -140,32 +140,7 @@ class Statistic < ActiveRecord::Base
 
     stats = scrape.at('#toolData').search('tr').map{|tr| tr.search('td').map(&:text)}
 
-    names1 = ['Rank', 'player', 'team', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
-    names2 = ['Rank', 'player', 'team', 'Opp', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
-
-    stats.map do |stat|
-      unless stat.blank?
-        result = {}
-        stat.each_with_index do |st, idx|
-          if idx == 1
-            st = st.gsub(/[,.']/, '').split(' ')
-            st = st[1..-1].concat(st[0..0])
-            st = st.first.downcase.match(/(jr|sr|iii)/) ? st[1..-1].join(' ') : st.join(' ')
-          end
-
-          if stat.size == 16
-            result[names2[idx]] = st if (st != "0" || idx == stat.size - 1)
-          else
-            result[names1[idx]] = st if (st != "0" || idx == stat.size - 1)
-          end
-        end
-
-        ffid = find_by_name(result['player'])
-        result['ff_id'] = ffid if ffid
-      end
-
-      result
-    end.compact
+    format_scrape(stats).compact
   end
 
   def self.fantasy_sharks(result, yr_code, year)
@@ -188,6 +163,42 @@ class Statistic < ActiveRecord::Base
       else
         (last_2 * 32) + 13
       end
+    end
+  end
+
+  def self.format_scrape(stats)
+    stats.map do |stat|
+      unless stat.blank?
+        result = {}
+        stat.each_with_index do |st, idx|
+          if idx == 1
+            st = scrape_name(st)
+          end
+
+          determine_pair(st, idx, stat, result)
+        end
+
+        ffid = find_by_name(result['player'])
+        result['ff_id'] = ffid if ffid
+      end
+      result
+    end
+  end
+
+  def self.scrape_name(st)
+    st = st.gsub(/[,.']/, '').split(' ')
+    st = st[1..-1].concat(st[0..0])
+    st.first.downcase.match(/(jr|sr|iii)/) ? st[1..-1].join(' ') : st.join(' ')
+  end
+  
+  def self.determine_pair(st, idx, stat, result)
+    names1 = ['Rank', 'player', 'team', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
+    names2 = ['Rank', 'player', 'team', 'Opp', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
+
+    if stat.size == 16
+      result[names2[idx]] = st if (st != "0" || idx == stat.size - 1)
+    else
+      result[names1[idx]] = st if (st != "0" || idx == stat.size - 1)
     end
   end
 

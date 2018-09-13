@@ -17,27 +17,11 @@ class Player < ActiveRecord::Base
   end
 
   def l5
-    last_5.flat_map do |yr|
-      yr.map do |k, v| 
-        if v
-          "Season #{k}: | #{ format_stat(v) }"
-        else
-          "Season #{k}: Not Applicable"
-        end
-      end
-    end
+    map_stat(:last_5, "Season ")
   end
 
   def wty
-    weeks_this_year.flat_map do |yr|
-      yr.map do |k, v| 
-        if v
-          "#{k}: | #{ format_stat(v) }"
-        else
-          "#{k}: Not Applicable"
-        end
-      end
-    end
+    map_stat(:weeks_this_year)
   end
 
   def projected
@@ -100,6 +84,18 @@ class Player < ActiveRecord::Base
   private
   def format_stat(arr)
     arr.map { |k2, v2| "#{k2}: #{v2.gsub('*', '')}" unless k2.match(/(ff|play|pos|tea)/) }.compact.join(" | ")
+  end
+
+  def map_stat(stat, text = nil)
+    self.send(stat).flat_map do |st|
+      st.map do |k, v| 
+        if v
+          "#{text}#{k}: | #{ format_stat(v) }"
+        else
+          "#{text}#{k}: Not Applicable"
+        end
+      end
+    end
   end
 
 end

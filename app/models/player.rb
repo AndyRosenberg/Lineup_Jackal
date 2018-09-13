@@ -5,15 +5,11 @@ class Player < ActiveRecord::Base
   delegate :league_type, to: :lineup
 
   def last_5
-    Statistic.last_5.map do |k, v|
-      {k => v.find {|pl| pl['ff_id'] == ff_id} }
-    end
+    map_stat_model(:last_5)
   end
 
   def weeks_this_year
-    Statistic.weeks_this_year.map do |k, v|
-      {k => v.find {|pl| pl['ff_id'] == ff_id} }
-    end
+    map_stat_model(:weeks_this_year)
   end
 
   def l5
@@ -25,19 +21,24 @@ class Player < ActiveRecord::Base
   end
 
   def projected
-    pj = Statistic.draft[position].find {|plyr| plyr['player_id'] == ff_id }
+    pj = find_stat_model_player(:draft)
     pj ? pj['fantasyPoints'] : "0"
   end
 
   def weekly(type = nil)
     type ||= league_type
-    pj = Statistic.weekly[position].find {|plyr| plyr['player_id'] == ff_id }
+    pj = find_stat_model_player(:weekly)
     pj ? pj[type] : "0"
   end
 
   def team
-    tm = Statistic.active_players.find {|plyr| plyr['player_id'] == ff_id }
+    tm = find_stat_model_player(:active_players)
     tm ? tm['team'] : "N/A"
+  end
+
+  def injuries
+    inj = find_stat_model_player(:injuries)
+    inj ? "#{inj['game_status'].split(' ').first} - #{inj['injury']}" : "None"
   end
 
   def image
@@ -51,11 +52,6 @@ class Player < ActiveRecord::Base
     { "for4": "https://www.4for4.com/fantasy-football/player/#{minussed}",
        "ffnerd": "https://www.fantasyfootballnerd.com/player/#{ff_id}/#{minussed}"
     }
-  end
-
-  def injuries
-    inj = Statistic.injuries.find { |pl| pl['player_id'] == ff_id }
-    inj ? "#{inj['game_status'].split(' ').first} - #{inj['injury']}" : "None"
   end
 
   def schedule(pteam = nil)
@@ -96,6 +92,18 @@ class Player < ActiveRecord::Base
         end
       end
     end
+  end
+
+  def map_stat_model(table)
+    Statistic.send(table).map do |k, v|
+      { k => v.find { |pl| pl['ff_id'] == ff_id } }
+    end
+  end
+
+  def find_stat_model_player(table)
+    result = Statistic.send(table)
+    result = result[position] if (table == :draft || table == :weekly)
+    result.find {|plyr| plyr['player_id'] == ff_id }
   end
 
 end

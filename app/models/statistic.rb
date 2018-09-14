@@ -147,7 +147,7 @@ class Statistic < ActiveRecord::Base
     results = scrape.lookup(url, '#toolData tr', '', '')
     results.values.map do |res|
       res.gsub!(', ', '~~')
-      res = find_prod_doubles(res)
+      prod_doubles!(res)
       res = res.split(' ')
       res[1].gsub!('~~', ', ')
       res[1].gsub!('``', ' ')
@@ -155,7 +155,7 @@ class Statistic < ActiveRecord::Base
     end
   end
 
-  def self.find_prod_doubles(str)
+  def self.prod_doubles!(str)
     if scraped_2w_defense?(str)
       double = { 
                        'Kansas City': 'Kansas``City', 'Green Bay': 'Green``Bay', 
@@ -164,7 +164,7 @@ class Statistic < ActiveRecord::Base
                        'New England': 'New``England', 'San Francisco': 'San``Francisco' 
                        }
       correct_double = double.keys.map(&:to_s).find { |dbl| str.include?(dbl) }
-      double[correct_double.to_sym]
+      str.gsub!(correct_double, double[correct_double.to_sym])
     else
       str
     end

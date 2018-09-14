@@ -117,11 +117,9 @@ class Statistic < ActiveRecord::Base
 
   def self.prev_weeks
     final = {}
-    current_week = CURRENT_WEEK.to_i
-    current_week.times do |n|
-      num = n + 1
-      wk = Statistic.this_year(num)
-      wk.each {|k, v| final["Week #{num}"] = v }
+    (1...CURRENT_WEEK).each do |n|
+      wk = Statistic.this_year(n)
+      wk.each {|k, v| final["Week #{n}"] = v }
     end
 
     final
@@ -197,12 +195,26 @@ class Statistic < ActiveRecord::Base
     end
   end
 
+  def self.scraped_2w_defense?(st)
+    return false if st.size < 3
+    doubles = ['Green Bay', 'Tampa Bay', 'Los Angeles', 'New Orleans', 'New York', 'New England', 'San Francisco', 'Kansas City']
+    doubles.any? { |dbl| st.include?(dbl) }
+  end
+
+  def self.scraped_surname?(st)
+    st.first.downcase.match(/(jr|sr|iii)/)
+  end
+
   def self.scrape_name(st)
     st = st.gsub(/[,.']/, '').split(' ')
-    st = st[1..-1].concat(st[0..0])
-    st.first.downcase.match(/(jr|sr|iii)/) ? st[1..-1].join(' ') : st.join(' ')
+    if scraped_2w_defense?(st)
+      st[-1, 1].concat(st[0..-2]).join(' ')
+    else
+      st = st[1..-1].concat(st[0..0])
+      scraped_surname?(st) ? st[1..-1].join(' ') : st.join(' ')
+    end
   end
-  
+
   def self.determine_pair(st, idx, stat, result)
     names1 = ['Rank', 'player', 'team', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']
     names2 = ['Rank', 'player', 'team', 'Opp', 'position', 'Passing Yds', 'Passing TDs', 'Rushing Yds', 'Rushing TDs', 'Receptions', 'Receiving Yds', 'Receiving TDs', 'Field Goals Made', 'Points Against', 'Tackles', 'Fantasy Points']

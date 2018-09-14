@@ -38,7 +38,12 @@ class Player < ActiveRecord::Base
 
   def injuries
     inj = find_stat_model_player(:injuries)
-    inj ? "#{inj['game_status'].split(' ').first} - #{inj['injury']}" : "None"
+    if inj 
+      status = inj['game_status'][0, 3] == "Did" ? "DNP" : inj['game_status'].split(' ').first
+      "#{status} - #{inj['injury']}" 
+    else
+      "None"
+    end
   end
 
   def image

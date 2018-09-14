@@ -45,7 +45,7 @@
           </dd>
           <dd>
               <p><b>Past Seasons:</b></p>
-              <%= render 'stat', stat: @player['l5'] %>
+              <%= render 'stat', stat: @player['l5'][0...-1] %>
           </dd>
         </div>
 

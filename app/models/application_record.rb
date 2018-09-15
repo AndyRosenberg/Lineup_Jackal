@@ -16,8 +16,6 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.daily_reload!
     ActiveRecord::Base.transaction do
-      players!
-      draft!
       injuries!
       schedules!
       weekly_proj!
@@ -34,6 +32,8 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.yearly_reload!
     ActiveRecord::Base.transaction do
+      players!
+      draft!
       last_5!
       everything!
     end

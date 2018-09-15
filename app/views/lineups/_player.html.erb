@@ -52,7 +52,7 @@
         Previous Years:
       </dt>
       <dd>
-        <%= render 'players/stat', stat: player['l5'] %>
+        <%= render 'players/stat', stat: player['l5'][0...-1] %>
       </dd>
 
     </dl>

@@ -70,9 +70,9 @@ class Statistic < ActiveRecord::Base
   end
 
   def self.find_by_name(name)
-    result = players.find {|plyr| plyr['display_name'].downcase.gsub(/[,.']/, '').include?(name.downcase.gsub(/[,.']/, '')) }
+    result = everything.find {|plyr| plyr['full_name'].downcase.gsub(/[,.']/, '').include?(name.downcase.gsub(/[,.']/, '')) }
 
-    return result['player_id'] if result
+    return result['ff_id'] if result
     nil
   end
 

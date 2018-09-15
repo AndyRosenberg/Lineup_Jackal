@@ -2,7 +2,7 @@ class DailyStatsJob < ApplicationJob
   queue_as :default
 
   def perform
-    ApplicationRecord.total_reload!
+    ApplicationRecord.daily_reload!
   end
 
 end

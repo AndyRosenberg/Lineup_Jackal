@@ -15,22 +15,28 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def self.daily_reload!
-    players!
-    draft!
-    injuries!
-    schedules!
-    weekly_proj!
-    everything!
+    ActiveRecord::Base.transaction do
+      players!
+      draft!
+      injuries!
+      schedules!
+      weekly_proj!
+      everything!
+    end
   end
 
   def self.weekly_reload!
-    prev_weeks!
-    everything!
+    ActiveRecord::Base.transaction do
+      prev_weeks!
+      everything!
+    end
   end
 
   def self.yearly_reload!
-    last_5!
-    everything!
+    ActiveRecord::Base.transaction do
+      last_5!
+      everything!
+    end
   end
 
   private

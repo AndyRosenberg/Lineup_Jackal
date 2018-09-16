@@ -41,6 +41,7 @@ class PlayersController < ApplicationController
   end
 
   def flex_create
+    @pos = params[:pos]
     params.permit!
     player = Player.fake_show(JSON.parse(params[:player]))
     if Lineup.find(params[:lineup_id]).players.where(ff_id: player.ff_id).first
@@ -54,7 +55,7 @@ class PlayersController < ApplicationController
         flash[:error] = "Something went wrong."
       end
     end
-    redirect_to "#{all_players_path}##{player.ff_id}"
+    redirect_to "#{all_players_path(pos: @pos)}##{player.ff_id}"
   end
 
   def show

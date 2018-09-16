@@ -43,6 +43,7 @@
             <%= form_tag flex_create_players_path do %>
               <%= select_tag "lineup_id", options_from_collection_for_select(current_user.lineups, "id", "name"), class: 'idx-select' %>
               <%= hidden_field_tag "player", player.to_json %>
+              <%= hidden_field_tag "pos", params[:pos] %>
               <%= submit_tag "+ Add", class: "btn btn-primary btn-sm" %>
             <% end %>
 

@@ -61,7 +61,8 @@ class Statistic < ActiveRecord::Base
     end
   end
 
-  def self.find_position(pos)
+  def self.ev_pos(pos = nil)
+    return everything unless pos
     everything.select { |plyr| plyr["position"] == pos }
   end
 

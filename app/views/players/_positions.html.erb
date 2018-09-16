@@ -1,0 +1,16 @@
+<div id="positions" class="text-center" >
+  <%= radio_button_tag "pos", "All", (!sel) %>
+  <%= label_tag nil, "All", class: "h4" %>
+  <%= radio_button_tag "pos", "QB", (sel == "QB") %>
+  <%= label_tag "pos", "QB", class: "h4" %>
+  <%= radio_button_tag "pos", "RB", (sel == "RB") %>
+  <%= label_tag "pos", "RB", class: "h4" %>
+  <%= radio_button_tag "pos", "WR", (sel == "WR") %>
+  <%= label_tag "pos", "WR", class: "h4" %>
+  <%= radio_button_tag "pos", "TE", (sel == "TE") %>
+  <%= label_tag "pos", "TE", class: "h4" %>
+  <%= radio_button_tag "pos", "DEF", (sel == "DEF") %>
+  <%= label_tag "pos", "DEF", class: "h4" %>
+  <%= radio_button_tag "pos", "K", (sel == "K") %>
+  <%= label_tag "pos", "K", class: "h4" %>
+</div>

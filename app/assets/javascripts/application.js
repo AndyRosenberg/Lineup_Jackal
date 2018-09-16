@@ -62,4 +62,27 @@ $(document).on('turbolinks:load', function() {
     $('.playcheck').show();
   });
 
+  $('#positions :radio').click(function(e) {
+      console.log('fired');
+      var url = location.href;
+      var $val = $(this).val();
+      $val = 'pos=' + $val;
+      var parts = location.search.split(/[?&]/g);
+
+      var pos = parts.find(function(str) { return str.includes('pos') });
+
+      if (pos) {
+        url = url.replace(pos, $val);
+      } else { 
+        if (location.search) {
+          url = url + '&' + $val
+        } else {
+          url = url + '?' + $val;
+        }
+      }
+
+      location.replace(url);
+
+    });
+
 });

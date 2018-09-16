@@ -1,15 +1,16 @@
 class PlayersController < ApplicationController
   before_action :require_user, except: [:show, :flex_index, :search]
   before_action :find_lineup, except: [:show, :flex_index, :flex_create, :search]
+  before_action :validate_pos, only: [:index, :flex_index, :search]
 
   def index
-    everything ||= Statistic.everything.first(500)
-    @all_players ||= @lineup.filter_players(everything)
+    everything = Statistic.ev_pos(params[:pos]).first(500)
+    @all_players = @lineup.filter_players(everything)
     @type = @lineup.league_type
   end
 
   def flex_index
-    @players ||= Statistic.everything.first(300)
+    @players = Statistic.ev_pos(params[:pos]).first(300)
   end
 
   def search
@@ -19,7 +20,7 @@ class PlayersController < ApplicationController
       @players = []
       flash[:error] = "No players matched your search."
     else
-      @players = Statistic.everything.first(500)
+      @players = Statistic.ev_pos(params[:pos]).first(500)
       @players = @players.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
 
       if @players.blank?
@@ -71,5 +72,9 @@ class PlayersController < ApplicationController
   private
   def find_lineup
     @lineup = Lineup.find_by(token: params[:lineup_id])
+  end
+
+  def validate_pos
+    params[:pos] = nil unless ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'].include?(params[:pos])
   end
 end

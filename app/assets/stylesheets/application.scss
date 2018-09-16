@@ -293,3 +293,12 @@ footer {
   max-width: 18rem;
   overflow-wrap: break-word;
 }
+
+#positions label {
+  vertical-align: middle;
+}
+
+#positions * {
+  margin: 0 .05rem;
+  vertical-align: middle;
+}

@@ -4,15 +4,17 @@ class PlayersController < ApplicationController
   before_action :validate_pos, only: [:index, :flex_index, :search]
 
   def index
-    everything = Statistic.ev_pos(params[:pos]).first(500)
-    @all_players = @lineup.filter_players(everything)
-    fresh_when(@all_players)
+    @pos = params[:pos]
+    @everything = Statistic.ev_pos(@pos).first(500)
+    @all_players = @lineup.filter_players(@everything)
+    fresh_when(@pos && @all_players)
     @type = @lineup.league_type
   end
 
   def flex_index
-    @players = Statistic.ev_pos(params[:pos]).first(300)
-    fresh_when(@players)
+    @pos = params[:pos]
+    @players = Statistic.ev_pos(@pos).first(300)
+    fresh_when(@pos && current_user && @players)
   end
 
   def search
@@ -24,7 +26,7 @@ class PlayersController < ApplicationController
     else
       @players = Statistic.ev_pos(params[:pos]).first(500)
       @players = @players.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
-      fresh_when(@players)
+      fresh_when(@pos && current_user && @players)
 
       if @players.blank?
         flash[:error] = "No players matched your search."

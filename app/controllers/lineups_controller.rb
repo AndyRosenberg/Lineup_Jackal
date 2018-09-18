@@ -7,6 +7,7 @@ class LineupsController < ApplicationController
 
   def index
     @lineups = current_user.lineups
+    fresh_when(@lineups)
   end
 
   def create
@@ -39,6 +40,7 @@ class LineupsController < ApplicationController
   def new; end
 
   def show
+    fresh_when(@lineup)
     @type = @lineup.league_type
     everything = Statistic.everything("weekly_#{@type}")
 

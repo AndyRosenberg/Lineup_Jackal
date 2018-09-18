@@ -6,11 +6,13 @@ class PlayersController < ApplicationController
   def index
     everything = Statistic.ev_pos(params[:pos]).first(500)
     @all_players = @lineup.filter_players(everything)
+    fresh_when(:etag => @all_players, :last_modified => @all_players.created_at.utc, :public => true)
     @type = @lineup.league_type
   end
 
   def flex_index
     @players = Statistic.ev_pos(params[:pos]).first(300)
+    fresh_when(:etag => @players, :last_modified => @players.created_at.utc, :public => true)
   end
 
   def search

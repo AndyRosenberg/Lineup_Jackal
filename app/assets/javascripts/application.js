@@ -63,7 +63,6 @@ $(document).on('turbolinks:load', function() {
   });
 
   $('#positions :radio').click(function(e) {
-      console.log('fired');
       var url = location.href;
       var $val = $(this).val();
       $val = 'pos=' + $val;
@@ -71,11 +70,17 @@ $(document).on('turbolinks:load', function() {
 
       var pos = parts.find(function(str) { return str.includes('pos') });
 
+      if (url.includes('#')) {
+          url = url.split('#')
+          url.pop();
+          url = url.join('');
+        }
+
       if (pos) {
         url = url.replace(pos, $val);
       } else { 
         if (location.search) {
-          url = url + '&' + $val
+          url = url + '&' + $val;
         } else {
           url = url + '?' + $val;
         }

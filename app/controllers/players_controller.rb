@@ -1,10 +1,9 @@
 class PlayersController < ApplicationController
   before_action :require_user, except: [:show, :flex_index, :search]
   before_action :find_lineup, except: [:show, :flex_index, :flex_create, :search]
-  before_action :validate_pos, only: [:index, :flex_index, :search]
+  before_action :validate_pos, only: [:index, :flex_index, :flex_create, :search]
 
   def index
-    @pos = params[:pos]
     @everything = Statistic.ev_pos(@pos).first(500)
     @all_players = @lineup.filter_players(@everything)
     fresh_when(@pos && @all_players)
@@ -12,7 +11,6 @@ class PlayersController < ApplicationController
   end
 
   def flex_index
-    @pos = params[:pos]
     @players = Statistic.ev_pos(@pos).first(300)
     fresh_when(@pos && current_user && @players)
   end
@@ -24,9 +22,8 @@ class PlayersController < ApplicationController
       @players = []
       flash[:error] = "No players matched your search."
     else
-      @players = Statistic.ev_pos(params[:pos]).first(500)
+      @players = Statistic.ev_pos(@pos).first(500)
       @players = @players.select { |pl| pl['full_name'].downcase.include?(params[:query].downcase) }
-      fresh_when(@pos && current_user && @players)
 
       if @players.blank?
         flash[:error] = "No players matched your search."
@@ -46,7 +43,6 @@ class PlayersController < ApplicationController
   end
 
   def flex_create
-    @pos = params[:pos]
     params.permit!
     player = Player.fake_show(JSON.parse(params[:player]))
     if Lineup.find(params[:lineup_id]).players.where(ff_id: player.ff_id).first
@@ -82,5 +78,6 @@ class PlayersController < ApplicationController
 
   def validate_pos
     params[:pos] = nil unless ['QB', 'RB', 'WR', 'TE', 'K', 'DEF'].include?(params[:pos])
+    @pos = params[:pos]
   end
 end

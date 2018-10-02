@@ -16,7 +16,8 @@
           <%= hidden_field_tag "statuses[#{idx}[id]]", ply.id %>
           <br />
           <figure class="roster-figure">
-            <img src=<%= @pics.find{|pl| pl['ff_id'] == ply.ff_id }['image'] %> />
+            <% pic = @pics.find{|pl| pl['ff_id'] == ply.ff_id } %>
+            <img src=<%= pic['image'] if pic %> />
             <figcaption>
               <small><em>fantasyfootballnerd.com</em></small>
             </figcaption>

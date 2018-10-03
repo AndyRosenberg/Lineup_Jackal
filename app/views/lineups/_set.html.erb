@@ -1,11 +1,12 @@
 <%= search_field_tag 'searchbar', nil, placeholder: 'Search by name', class: 'w-75' %>
 <% @positions.each do |pos| %>
+    <% num = /(WR|RB)/.match(pos) ? 60 : 35 %> 
     <hr class="head-show" />
     <h3 class="text-center head-show"><%= pos %></h3>
     <hr class="head-show mb-4" />
 
     <div class="text-center">
-      <% Statistic.ev_pos(pos).first(35).each_with_index do |ply, idx| %>
+      <% Statistic.ev_pos(pos).first(num).each_with_index do |ply, idx| %>
         <% unless ply['projected'].to_i < 1 %>
           <span class="playcheck">
             <%= hidden_field_tag "lineup[players[][ff_id]]", ply["ff_id"] %>

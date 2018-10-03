@@ -160,7 +160,7 @@ class LineupsController < ApplicationController
 
   private
   def load_draft
-    @draft = Statistic.draft
+    @positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
   end
 
   def find_lineup

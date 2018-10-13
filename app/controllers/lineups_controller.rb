@@ -112,7 +112,7 @@ class LineupsController < ApplicationController
 
   def roster
     @players = @lineup.players
-    if @players.any? { |pl| !pl.status.nil? }
+    if @players.any? { |pl| pl.status != 'bench' }
       flash[:error] = "Roster already set. Please click 'edit' on your lineup to change status."
       redirect_to lineups_path
     end

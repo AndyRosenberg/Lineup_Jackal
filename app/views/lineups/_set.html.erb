@@ -1,4 +1,5 @@
-<%= search_field_tag 'searchbar', nil, placeholder: 'Search by name', class: 'w-75' %>
+<%= search_field_tag 'searchbar', nil, placeholder: 'Filter players by name', class: ' form-control w-75 mt-3' %>
+
 <% @positions.each do |pos| %>
     <% num = /(WR|RB)/.match(pos) ? 60 : 35 %> 
     <hr class="head-show" />

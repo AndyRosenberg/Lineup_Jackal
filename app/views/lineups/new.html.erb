@@ -1,22 +1,25 @@
 <h1 class="text-center p-2 bland-h1">New Team</h1>
 <%= form_tag lineups_path do %>
-  <div class="text-center">
+  <div class="text-center" id="new-choices">
     <%= label_tag "lineup[name]", "Team Name:", class: "h4" %>
     <br />
-    <%= text_field_tag "lineup[name]", nil, class: 'w-50 text-center' %>
+    <%= text_field_tag "lineup[name]", nil, class: 'w-50 text-center', id: 'choose-tname', placeholder: 'Required', required: true %>
     <br />
     <br />
     <%= label_tag "lineup[league_type]", "Leage Type:", class: "h4 mb-2"  %>
     <br />
-    <span>Standard</span>
     <%= radio_button_tag "lineup[league_type]", "standard" %>
-    <span>PPR</span>
+    <span class="choose-ltype">Standard</span>
+    <span class="mx-1">&nbsp;</span>
+    <span class="choose-ltype">PPR</span>
     <%= radio_button_tag "lineup[league_type]", "ppr" %>
   </div>
-  <div class="text-center mt-4">
+
+  <h4 class="text-center mt-4">Pick Players:</h4>
+  <div class="text-center pt-2">
     <%= submit_tag "Set Roster", class: "btn btn-default btn-idx" %>
   </div>
-  <br />
+
   <%= render 'set' %>
   <div class="text-center">
     <%= submit_tag "Set Roster", class: 'w-25 btn btn-default btn-idx'  %>

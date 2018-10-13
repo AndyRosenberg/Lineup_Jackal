@@ -13,6 +13,11 @@ class LineupsController < ApplicationController
   def create
     pre = params[:lineup]
     pre[:players] = params[:lineup][:players].select{|ply| ply[:full_name]}
+    if pre[:players].blank?
+      flash[:error] = "Please select at least one player."
+      load_draft
+      return render new_lineup_path
+    end
     params.require(:lineup).permit!
 
     begin
@@ -23,6 +28,7 @@ class LineupsController < ApplicationController
         pre[:players].each do |item|
           item[:lineup_id] = league.id
           item[:position] = Statistic.find_player(item[:ff_id])['position']
+          item[:status] = 'bench'
           player = Player.new(item)
           player.save!
           league.players << player
@@ -121,14 +127,14 @@ class LineupsController < ApplicationController
       ActiveRecord::Base.transaction do
         roster[:statuses].each do |k, v|
           player = Player.find(v[:id])
-          player.status = v[:stat] || "bench"
+          player.status = v[:stat] ? v[:stat] : "bench"
           player.save!
         end
-        flash[:notice] = "Success"
+        flash[:notice] = "Your Lineup Has Been Created."
         redirect_to lineups_path
       end
     rescue ActiveRecord::RecordInvalid
-      flash[:error] = "Invalid Entry"
+      flash[:error] = "Invalid Entry."
       redirect_to roster_lineup_path
     end
   end
@@ -167,14 +173,14 @@ class LineupsController < ApplicationController
     if Lineup.exists?(token: params[:id])
       @lineup = Lineup.find_by(token: params[:id])
     else
-      flash[:error] = "Lineup doesn't exist."
+      flash[:error] = "Access Denied."
       redirect_to home_path 
     end
   end
 
   def access_denied?
     unless Lineup.find_by(token: params[:id]).user == current_user
-      flash[:error] = "Access Denied"
+      flash[:error] = "Access Denied."
       redirect_to home_path 
     end
   end

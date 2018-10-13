@@ -170,9 +170,9 @@ figure img.small {
 
 #searchbar {
   margin-left: 12%;
-  border-radius: 2%;
+  border-radius: 2rem;
   outline: none;
-  text-indent: .5rem;
+  text-indent: .2rem;
 }
 
 .plyr-del:hover, .plyr-del:active, .lineup-del:hover, .lineup-del:active {
@@ -301,4 +301,22 @@ footer {
 #positions * {
   margin: 0 .05rem;
   vertical-align: middle;
+}
+
+#choose-tname {
+  outline: none;
+  border: none;
+  font-size: x-large;
+}
+
+.choose-ltype {
+  font-size: x-large;
+  font-weight: 300;
+  vertical-align: -.225rem;
+}
+
+#new-choices input[type=radio], #matchup-choose input[type=radio] {
+  transform:scale(1.25);
+  vertical-align: middle;
+  margin: 0 .4rem;
 }

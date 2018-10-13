@@ -18,16 +18,17 @@
 
 <%= form_tag add_matchup_lineups_path, remote: true, class: "mt-2 mb-2" do %>
   <h2 class="text-center p-2 bland-h1">Pick Team:</h2>
-  <div class="text-center">
-    <span class="h5">Team 1</span>
+  <div class="text-center" id="matchup-choose">
     <%= radio_button_tag "team", "home-team", selected: true %>
-    <span class="h5">Team 2</span>
+    <span class="choose-ltype">Team 1</span>
+    <span class="mx-1">&nbsp;</span>
+    <span class="choose-ltype">Team 2</span>
     <%= radio_button_tag "team", "away-team" %>
   </div>
   <br />
 
-  <h2 class="text-center p-2 bland-h1">Pick Players:</h2>
-  <div class="text-center mb-4">
+  <h2 class="text-center mt-2 bland-h1">Pick Players:</h2>
+  <div class="text-center pt-1">
     <%= submit_tag "Matchup", class: "btn btn-default btn-idx" %>
   </div>
 

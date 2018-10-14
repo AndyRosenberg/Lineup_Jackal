@@ -1,0 +1,123 @@
+<% case @temp %>
+  <% when 'flex' %>
+    <% @players.each do |player| %>
+      <article class="d-inline-block pt-2 player-idx idx-fixed" id='<%= "#{player['ff_id']}" %>'>
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1", target: "_blank" %></h4>
+        <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
+        <figure "d-inline-block">
+          <img src=<%= player['image'] %> class="small img-idx" />
+          <figcaption class="fig-idx">
+            <small><em>fantasyfootballnerd.com</em></small>
+          </figcaption>
+        </figure>
+        <aside class="mb-3 ml-2 flexed">
+          <dl class="flex-dl">
+            <dt>
+              Injuries:
+            </dt>
+            <dd>
+              <small><%= player["injuries"] %></small>
+            </dd>
+            <dt>
+              Weekly Proj (<%= player["schedule"] %>):
+            </dt>
+            <dd>
+              <%= player["weekly_standard"] %> points (standard)
+            </dd>
+            <dd>
+              <%= player["weekly_ppr"] %> points (ppr)
+            </dd>
+            <dt>
+              Projected This Year:
+            </dt>
+            <dd>
+              <%= player['projected'] %> points
+            </dd>
+          </dl>
+          <%= form_tag flex_create_players_path do %>
+            <%= select_tag "lineup_id", options_from_collection_for_select(current_user.lineups, "id", "name"), class: 'idx-select' %>
+            <%= hidden_field_tag "player", player.to_json %>
+            <%= hidden_field_tag "pos", params[:pos] %>
+            <%= submit_tag "+ Add", class: "btn btn-primary btn-sm" %>
+          <% end %>
+        </aside>
+      </article>
+    <% end %>
+  <% when 'index' %>
+    <% @players.each do |player| %>
+      <article class="d-inline-block pt-2 player-idx player-idx-2 idx-fixed">
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1", target: "_blank" %></h4>
+        <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
+        <figure "d-inline-block">
+          <img src=<%= player['image'] %> class="small img-idx" />
+          <figcaption class="fig-idx">
+            <small><em>fantasyfootballnerd.com</em></small>
+          </figcaption>
+        </figure>
+        <aside class="mb-3 ml-2 flexed">
+          <dl>
+            <dt>
+              Injuries:
+            </dt>
+            <dd>
+              <small><%= player["injuries"] %></small>
+            </dd>
+            <dt>
+              Weekly Proj (<%= player["schedule"] %>):
+            </dt>
+            <dd>
+              <%= player["weekly_#{@type}"] %> points
+            </dd>
+            <dt>
+              Projected This Year:
+            </dt>
+            <dd>
+              <%= player['projected'] %> points
+            </dd>
+          </dl>
+          <%= button_to "+ Add", { action: "create" }, class: "btn btn-primary", id: "button-#{player['ff_id']}", remote: true, params: { "player" => player } %>
+        </aside>
+      </article>
+    <% end %>
+  <% else %>
+    <% @players.each do |player| %>
+      <article class="d-inline-block pt-2 player-idx idx-fixed" id='<%= "#{player['ff_id']}" %>'>
+        <h4 class="pl-1"><%= link_to player['full_name'], player_path(player['ff_id']), class: "plink bland-h1", target: "_blank" %></h4>
+        <h6 class="pl-2"><%= "#{player['position']} - #{player['team']}" %></h6>
+        <figure "d-inline-block">
+          <img src=<%= player['image'] %> class="small img-idx" />
+          <figcaption class="fig-idx">
+            <small><em>fantasyfootballnerd.com</em></small>
+          </figcaption>
+        </figure>
+        <aside class="mb-3 ml-2 flexed">
+          <dl class="flex-dl">
+            <dt>
+              Injuries:
+            </dt>
+            <dd>
+              <small><%= player["injuries"] %></small>
+            </dd>
+            <dt>
+              Weekly Proj (<%= player["schedule"] %>):
+            </dt>
+            <dd>
+              <%= player["weekly_standard"] %> points (standard)
+            </dd>
+            <dd>
+              <%= player["weekly_ppr"] %> points (ppr)
+            </dd>
+
+            <dt>
+              Projected This Year:
+            </dt>
+            <dd>
+              <%= player['projected'] %> points
+            </dd>
+
+          </dl>
+
+        </aside>
+      </article>
+    <% end %>
+<% end %>

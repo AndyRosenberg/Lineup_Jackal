@@ -5,14 +5,16 @@ class PlayersController < ApplicationController
 
   def index
     @everything = Statistic.ev_pos(@pos).first(500)
-    @all_players = @lineup.filter_players(@everything)
-    fresh_when(@pos && @all_players)
+    @players = @lineup.filter_players(@everything)
+    fresh_when(@pos && @players)
     @type = @lineup.league_type
+    @temp = 'index'
   end
 
   def flex_index
     @players = Statistic.ev_pos(@pos).first(300)
     fresh_when(@pos && current_user && @players)
+    @temp = 'flex' if logged_in? && !current_user.lineups.blank?
   end
 
   def search

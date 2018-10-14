@@ -7,7 +7,7 @@ class LineupsController < ApplicationController
 
   def index
     @lineups = current_user.lineups
-    fresh_when(@lineups.size)
+    fresh_when(@lineups.map {|line| line.players.size})
   end
 
   def create

@@ -81,7 +81,7 @@ class ApplicationRecord < ActiveRecord::Base
     past_injuries.update!(json: JSON.generate(current_injuries))
   end
 
-  def draft!
+  def self.draft!
     rankings = {}
     positions = ['QB', 'RB', 'WR', 'TE', 'K', 'DEF']
 

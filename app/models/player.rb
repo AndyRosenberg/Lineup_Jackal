@@ -91,9 +91,9 @@ class Player < ActiveRecord::Base
     self.send(stat).flat_map do |st|
       st.map do |k, v| 
         if v
-          "#{text}#{k}: | #{ format_stat(v) }"
+          "#{text}: #{k} | #{ format_stat(v) }"
         else
-          "#{text}#{k}: Not Applicable"
+          "#{text}: #{k} | Not Applicable"
         end
       end
     end

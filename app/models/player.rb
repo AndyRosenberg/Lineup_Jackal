@@ -13,7 +13,7 @@ class Player < ActiveRecord::Base
   end
 
   def l5
-    map_stat(:last_5, "Season ")
+    map_stat(:last_5, "Season")
   end
 
   def wty

@@ -68,7 +68,7 @@ class ApplicationRecord < ActiveRecord::Base
     past_weekly = stat("weekly")
     past_weekly.update!(json: JSON.generate(weekly), week: CURRENT_WEEK)
   end
-  
+
   def self.schedules!
     schedules = FFNerd.schedule.map(&:to_h)
     past_schedules = stat("schedules")

@@ -4,9 +4,11 @@ describe LineupsController do
   add_user
 
   context "pre-login" do
-    it "redirects" do
-      get :index
-      expect(response).to redirect_to login_path
+    describe "GET index" do
+      it "redirects to login" do
+        get :index
+        expect(response).to redirect_to login_path
+      end
     end
   end
 
@@ -15,9 +17,11 @@ describe LineupsController do
       session[:user_id] = andy.id
     end
 
-    it "loads index" do
-      get :index
-      expect(response).to render_template :index
+    describe "GET index" do
+      it "loads index" do
+        get :index
+        expect(response).to render_template :index
+      end
     end
   end
 end
